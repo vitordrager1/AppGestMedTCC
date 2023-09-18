@@ -23,7 +23,8 @@ import {
     HStack,
     Flex,
     Spacer,
-    Divider
+    Divider,
+    Link
   } from '@chakra-ui/react'
 
   import { ChevronDownIcon,HamburgerIcon } from '@chakra-ui/icons'
@@ -47,6 +48,13 @@ function MainNavbar() {
               <Flex alignItems='left' flexDirection='column'>
                 <Stack spacing={30}>
                   <Menu padding="">
+                    <MenuItem textDecoration={"none"} _hover={{ textDecoration: 'none'}} as={Link} href="/">
+                      
+                      Início
+                      
+                    </MenuItem>
+                  </Menu>
+                  <Menu padding="">
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                       Cadastrar
                     </MenuButton>
@@ -61,8 +69,9 @@ function MainNavbar() {
                       Consultar
                     </MenuButton>
                     <MenuList>
-                      listPaciente
-                      list Agendamentos
+                      <MenuItem as={Link} textDecoration="none" _hover={{ textDecoration: 'none' }} href="/pacientes">
+                        Pacientes
+                      </MenuItem>
                     </MenuList>
                   </Menu>
                 </Stack>

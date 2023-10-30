@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import InputMask from 'react-input-mask';
 import moment from 'moment';
+
 import {
     Modal,
     ModalOverlay,
@@ -39,7 +40,7 @@ function AddPaciente() {
     const [dsObservacao, setDsObservacao] = useState('')
     const [idOperador, setIdOperador] = useState('')
     const [dtInativacao, setDtInativacao] = useState('')
-
+    const { isOpen, onOpen, onClose } = useDisclosure()
     function handleNomeChange(e){
         setNome(e.target.value)
     }
@@ -72,7 +73,6 @@ function AddPaciente() {
             dsObservacao: dsObservacao,
             idOperador: 1//idOperador
         }
-        console.log(data)
         PessoaDataService.create(data)
         .then(response => {
             setId(id)
@@ -81,8 +81,6 @@ function AddPaciente() {
             setNrContatoSec(nrContatoSec)
             setDsObservacao(dsObservacao)
             setIdOperador(idOperador)
-            
-            console.log(response.data);
         })
         .catch(e => {
             console.log(e);
@@ -96,14 +94,11 @@ function AddPaciente() {
             //dtInativacao: moment(new Date('01/01/2001'), 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss'),
             idOperador: idOperador,
         }
-        console.log(data)
         PacienteDataService.create(data)
         .then(response => {
             setId(id)
             setDtInativacao(dtInativacao)
             setIdOperador(idOperador)
-            
-            console.log(response.data);
         })
         .catch(e => {
             console.log(e);
@@ -111,40 +106,15 @@ function AddPaciente() {
 
     }
 
-    function handleNewPessoa(){
-        setId('')
-        setNome('')
-        setNrContato('')
-        setNrContatoSec('')
-        setDsObservacao('')
-        setIdOperador('')
-        handleNewPaciente()
-    }
-    function handleNewPaciente(){
-        setId('')
-        setDtInativacao('')
-        setIdOperador('')
-    }
-    
-    
-    const { isOpen, onOpen, onClose } = useDisclosure()
-  
-    // const [input, setInput] = useState('')
-
-    // const handleInputChange = (e) => setInput(e.target.value)
-  
-    // const isError = input === ''
-  
-
     return (
       <>    
         <MenuItem onClick={onOpen}>Paciente</MenuItem>
-        <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+        <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <form onSubmit={handleSavePessoa}>
             <ModalContent padding="10">
                 <ModalHeader><Center>Cadastro de Paciente</Center></ModalHeader>
-                <ModalCloseButton />
+                <ModalCloseButton color={"#F54756"} />
                 <FormControl >
 
                     <FormLabel>Nome</FormLabel>
@@ -171,11 +141,11 @@ function AddPaciente() {
                 </FormControl>
 
                 <ModalFooter>
-                    <Button mt={4} colorScheme='teal' type='submit'>
-                        Submit
+                    <Button mt={4}  _hover={{bg: "#F54756"}} bg={"#F57977"} color={'white'} type='submit'>
+                        Cadastrar
                     </Button>
                     <Spacer/>
-                    <Button mt={4} colorScheme='teal' onClick={onClose}>
+                    <Button mt={4} _hover={{bg: "#F54756"}} bg={"#F57977"} color={'white'} onClick={onClose}>
                         Cancelar
                     </Button>
                 </ModalFooter>

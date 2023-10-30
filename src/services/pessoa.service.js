@@ -28,9 +28,10 @@ class PessoaDataService {
         return http.delete(`/pessoas`)
     }
 
-    findByNome(nome) {
-        return http.get(`pessoas?nome=${nome}`)
+    findByName(name) {
+        return http.get(`pessoas/pessoas?name=${name}`)
     }
+    
 }
 
 export default new PessoaDataService()

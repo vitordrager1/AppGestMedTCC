@@ -1,0 +1,6 @@
+.Search{
+    position: absolute; /* Define a posição como absoluta */
+    top: 0; /* Ajusta a posição superior conforme necessário */
+    left: 0; /* Ajusta a posição à esquerda conforme necessário */
+    z-index: 1;
+}

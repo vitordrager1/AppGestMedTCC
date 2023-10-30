@@ -27,8 +27,8 @@ class PacienteDataService {
         return http.delete(`/pacientes`)
     }
 
-    findByNome(nome) {
-        return http.get(`pacientes?nome=${nome}`)
+    findByName(name) {
+        return http.get(`pacientes?name=${name}`)
     }
 }
 

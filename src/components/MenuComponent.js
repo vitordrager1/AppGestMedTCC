@@ -24,10 +24,12 @@ import {
     Flex,
     Spacer,
     Divider,
-    Link
+    Link,
+    Center
   } from '@chakra-ui/react'
 
   import { ChevronDownIcon,HamburgerIcon } from '@chakra-ui/icons'
+import { color } from "framer-motion";
 
 function MainNavbar() {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -36,25 +38,33 @@ function MainNavbar() {
     return (
       <>
         
-        <Button colorScheme='blue' onClick={onOpen} >
+        <Button bg='#F54756' onClick={onOpen} color={"white"}>
           <Icon as={HamburgerIcon}/>
         </Button>
         <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
           <DrawerOverlay />
-          <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader borderBottomWidth='1px'>Menu</DrawerHeader>
+          <DrawerContent  bg={"#F57977"}>
+            <DrawerCloseButton color={"white"}/>
+            <DrawerHeader borderBottomWidth='1px' color={"white"}>Menu</DrawerHeader>
             <DrawerBody>
-              <Flex alignItems='left' flexDirection='column'>
+              <Flex alignItems='left' flexDirection='column' >
                 <Stack spacing={30}>
-                  <Menu padding="">
-                    <MenuItem textDecoration={"none"} _hover={{ textDecoration: 'none'}} as={Link} href="/">
-                      
+                  <Menu>
+                    <MenuItem 
+                    float={"center"} 
+                    borderRadius={5} 
+                    color={"white"} 
+                    bg={"#F54756"} 
+                    textDecoration={"none"} 
+                    _hover={[{ textDecoration: 'none'}, {color: "black"}]} 
+                    as={Link} href="/"
+                    display="flex" // Tornar o conteúdo flexível
+                    justifyContent={"center"}
+                    fontFamily={"Arial"}>
                       Início
-                      
                     </MenuItem>
                   </Menu>
-                  <Menu padding="">
+                  <Menu >
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                       Cadastrar
                     </MenuButton>

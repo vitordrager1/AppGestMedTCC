@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-
 import {
     Modal,
+    Select,
     ModalOverlay,
     ModalContent,
     ModalHeader,
@@ -20,130 +20,126 @@ import {
     InputLeftElement,
     Center,
     Link,
-    MenuItem
+    MenuItem,
+    Spacer
     
   } from '@chakra-ui/react'
-import { PhoneIcon, AddIcon, WarningIcon } from '@chakra-ui/icons'
-
-import PacienteDataService from "../services/paciente.service"
+import { SearchBar } from "./SearchByName/SearchBar"
+import { SearchResultsList } from "./SearchByName/SearchResultsList";
+import agendamentoService from '../services/agendamento.service';
+import tipoAtendService from '../services/tipoAtend.service';
+import "../components/SearchByName/Search.css"
 function AddAgendamento(props) {
-    
-    const [id, setId] = useState('')
+    const [results, setResults] = useState([]);
+    const [tipoAtend, setTipoAtend] = useState([]);
+    const [idPessoa, setIdPessoa] = useState('')
     const [nome, setNome] = useState('')
-    const [telefone1, setTelefone1] = useState('')
-    const [telefone2, setTelefone2] = useState('')
-    const [dt_cancel, setDt_cancel] = useState('')
+    const [cdAtend, setCdAtend] = useState('')
+    const [horaInicio, setHoraInicio] = useState('')
+    const [horaFim, setHoraFim] = useState('')
     const [observacoes, setObservacoes] = useState('')
-
-    function handleNomeChange(e){
-        setNome(e.target.value)
-    }
-
-    function handleTelefone1Change(e){
-        setTelefone1(e.target.value)
-    }
-
-    function handleTelefone2Change(e){
-        setTelefone2(e.target.value)
-    }
-
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [input, setInput] = useState('')
+    const isError = input === ''
+    const [dataAgendamento, setDataAgendamento] = useState('')
     
+    function handleNomeIdChange(id,nome){
+        setNome(nome)
+        setIdPessoa(id)
+    }
 
-    function handleDt_cancelChange(e){
-        setDt_cancel(e.target.value)
+    function handleDataAgendamento(e){
+        setDataAgendamento(e.target.value)
+    }
+
+    function handleHoraInicio(e){
+        setHoraInicio(e.target.value)
+    }
+
+    function handleHoraFim(e){
+        setHoraFim(e.target.value)
+    }
+
+    function handleCdTipoAtend(e){
+        setCdAtend(e.target.value)
+        console.log(cdAtend)
     }
 
     function handleObservacoesChange(e){
         setObservacoes(e.target.value)
     }
 
-    function handleSavePaciente(){
+    function handleSaveAgendamento(){//idPessoa, cdAtend, horaFim, horaInicio, observacoes
         var data = {
-            id: id,
-            nome: nome,
-            telefone1: telefone1,
-            telefone2: telefone2,
-            dt_cancel: dt_cancel,
-            observacoes: observacoes
+            IdPessoa: idPessoa,
+            cd_tipoAtend: cdAtend,
+            dt_atendimento: dataAgendamento,
+            dt_horaInicio: horaInicio,
+            dt_horaFim: horaFim,
+            ds_observacao: observacoes,
+            id_operador: 1
         }
-        console.log(data)
-        PacienteDataService.create(data)
+        agendamentoService.create(data)
         .then(response => {
-            setId(id)
-            setNome(nome)
-            setTelefone1(telefone1)
-            setTelefone2(telefone2)
-            setDt_cancel(dt_cancel)
-            setObservacoes(observacoes)
-
-            console.log(response.data);
+            alert('Sucesso')
         })
         .catch(e => {
-            console.log(e);
+            console.log(e)
+        })
+    }
+
+    function retListTipoAtend() {
+        tipoAtendService.getAll()
+        .then(response => {
+            setTipoAtend(response.data);
+        })
+        .catch(e => {
+        console.log(e);
         });
     }
-
-    function handleNewPaciente(){
-        setId('')
-        setNome('')
-        setTelefone1('')
-        setTelefone2('')
-        setDt_cancel('')
-        setObservacoes('')
-    }
-    
-    
-    const { isOpen, onOpen, onClose } = useDisclosure()
-  
-    const [input, setInput] = useState('')
-
-    const handleInputChange = (e) => setInput(e.target.value)
-  
-    const isError = input === ''
-  
 
     return (
       <>   
         <MenuItem onClick={onOpen}>Agendamento</MenuItem>
         <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <form onSubmit={handleSavePaciente}>
-            <ModalContent>
-                <ModalHeader><Center>Cadastro de Paciente</Center></ModalHeader>
-                <ModalCloseButton />
+        <form onSubmit={handleSaveAgendamento}>
+            <ModalContent padding="10">
+                <ModalHeader><Center>Agendamento</Center></ModalHeader>
+                <ModalCloseButton color={"#F54756"} />
+                <FormLabel>Nome Paciente</FormLabel>
                 <FormControl >
+                    <div className="search-bar-container">
+                        <SearchBar setResults={setResults} setName={nome}/>
+                        {results && results.length > 0 && <SearchResultsList results={results}  onNameClick={handleNomeIdChange} className="Search"/>}
+                    </div>
 
-                    <FormLabel>First name</FormLabel>
-                    <Input type='text' placeholder='First name' onChange={handleNomeChange}/>
-                    <FormLabel>Número de telefone 1</FormLabel>
-                    <InputGroup>
-                        
-                        <InputLeftElement pointerEvents='none'>
-                            <PhoneIcon color='gray.300' />
-                        </InputLeftElement>
-                        <Input type='number' placeholder='Telefone 1' onChange={handleTelefone1Change} value={telefone1}/>
-                    </InputGroup>
+                    <FormLabel>Tipo Atendimento</FormLabel>
+                    <Select value={cdAtend} onClick={retListTipoAtend} onChange={handleCdTipoAtend} >
+                        {tipoAtend.map((tipoAtend)=>(
+                            <option key={tipoAtend.cd_tipoAtend} value={tipoAtend.cd_tipoAtend}>{tipoAtend.ds_tipoAtend}</option>
+                        ))}
+                    </Select>
 
-                    <FormLabel>Número de telefone 2</FormLabel>
-                    <InputGroup>
-                        
-                        <InputLeftElement pointerEvents='none'>
-                            <PhoneIcon color='gray.300' />
-                        </InputLeftElement>
-                        <Input type='number' placeholder='Telefone 2' onChange={handleTelefone2Change} value={telefone2}/>
-                    </InputGroup>
-
-                    <FormLabel>Observacões</FormLabel>
-                    <Input type='text' placeholder='Observacões' onChange={handleObservacoesChange} value={observacoes}/>
+                    <FormLabel>Data Agendamento</FormLabel>
+                    <Input type='date' placeholder='Data agendamento' onChange={handleDataAgendamento} value={dataAgendamento}/>
                             
+                    <FormLabel>Horário previsão de início</FormLabel>
+                    <Input type='time' placeholder='Início' onChange={handleHoraInicio} value={horaInicio}/>
                     
+                    <FormLabel>Horário previsão de Término</FormLabel>
+                    <Input type='time' placeholder='Término' onChange={handleHoraFim} value={horaFim}/>
+
+                    <FormLabel>Observações</FormLabel>
+                    <Input type='text' placeholder='Observacões' onChange={handleObservacoesChange} value={observacoes}/>
                 </FormControl>
 
                 <ModalFooter>
-                    <Button mt={4} colorScheme='teal' type='submit'>
-                        Submit
+                    <Button mt={4}  _hover={{bg: "#F54756"}} bg={"#F57977"} color={'white'} type='submit'>
+                        Cadastrar
                     </Button>
-                    <Button mt={4} colorScheme='teal' onClick={onClose}>
+                    <Spacer/>
+                    <Button mt={4} _hover={{bg: "#F54756"}} bg={"#F57977"} color={'white'} onClick={onClose}>
                         Cancelar
                     </Button>
                 </ModalFooter>

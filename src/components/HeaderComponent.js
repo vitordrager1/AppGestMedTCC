@@ -22,7 +22,7 @@ import { Routes, Route, Link } from "react-router-dom";
 
 function Header (props) {
     return(
-        <Box p='4' bg='green.400' w={"100%"}>
+        <Box p='4' bg='#F57977' w={"100%"}>
 
             <Flex >
                 <Box>
@@ -35,13 +35,11 @@ function Header (props) {
                 <Spacer />
                 <Box>
                     <Menu>
-                    <MenuButton as={Button} colorScheme='pink'>
+                    <MenuButton as={Button} bg='#F54756' color={"white"}>
                         Conta
                     </MenuButton>
                     <MenuList>
-                        
                         <MenuItem>Minha conta</MenuItem>
-                        
                         <MenuDivider />
                         <MenuItem>Sair</MenuItem>
                     </MenuList>

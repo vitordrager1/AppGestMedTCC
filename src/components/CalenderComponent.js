@@ -13,13 +13,13 @@ function Calendar2() {
   return (
     <ChakraProvider>
       <Container maxW="container.md" mt="4">
-        <Box p="4" boxShadow="md" borderRadius="md">
-          <Calendar
+        <Box height={350}>
+          <Calendar className="custom-calendar"
             onChange={handleDateChange}
             value={selectedDate}
           />
         </Box>
-        <Box mt="4">Data selecionada: {selectedDate.toDateString()}</Box>
+        <Box boxShadow={5} borderRadius={5} p={2} bg={"#F54756"} mt="4">Data selecionada: {selectedDate.toDateString()}</Box>
       </Container>
     </ChakraProvider>
   );

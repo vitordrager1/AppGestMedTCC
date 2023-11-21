@@ -13,6 +13,9 @@ import Header from "./components/HeaderComponent"
 import Navbar from "./components/MenuComponent"
 import { ChakraProvider } from '@chakra-ui/react';
 import ListPaciente from './components/ListPaciente';
+import ListAgendamento from './components/ListAgendamento'
+import AboutUs from './components/AboutUs'
+import PainelAdministrador from './components/PainelAdministrador';
 const App = () => {
 
   return(
@@ -23,7 +26,10 @@ const App = () => {
         <div>
           <Routes>
             <Route path='/' element={<Home/>} />
-            <Route path='/pacientes' element={<ListPaciente/>} />
+            <Route path='/pessoas' element={<ListPaciente/>} />
+            <Route path='/agendamentos' element={<ListAgendamento/>} />
+            <Route path='/sobre' element={<AboutUs/>} />
+            <Route path='/painel' element={<PainelAdministrador/>} />
             {/* <Route path='/tutorials' element={<TutorialsList/>} />
             <Route path='/add' element={<AddTutorial/>} />
             <Route path='/tutorials/:id' element={<Tutorial/>} /> */}

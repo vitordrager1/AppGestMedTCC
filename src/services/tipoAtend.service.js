@@ -13,7 +13,7 @@ class TipoAtendDataService {
 
     create(data) {
         console.log(data)
-        return http.post(`/tipoatend`, data)
+        return http.post(`/tipoatend/tipoatend`, data)
     }
 
     update(id, data) {

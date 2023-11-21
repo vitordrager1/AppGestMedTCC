@@ -4,7 +4,7 @@ class AgendamentoDataService {
 
 
     getAll() {
-        return http.get("/agendamentos")
+        return http.get("/agendamentos/agendamentos")
     }
 
     get(id) {
@@ -12,7 +12,6 @@ class AgendamentoDataService {
     }
 
     create(data) {
-        console.log(data)
         return http.post(`/agendamentos`, data)
     }
 

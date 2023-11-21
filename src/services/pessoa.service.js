@@ -4,7 +4,7 @@ class PessoaDataService {
 
 
     getAll() {
-        return http.get("/pessoas")
+        return http.get("/pessoas/pessoas")
     }
 
     get(id) {
@@ -17,6 +17,7 @@ class PessoaDataService {
     }
 
     update(id, data) {
+        
         return http.put(`/pessoas/${id}`, data)
     }
 
@@ -29,7 +30,7 @@ class PessoaDataService {
     }
 
     findByName(name) {
-        return http.get(`pessoas/pessoas?name=${name}`)
+        return http.get(`pessoas/pessoas/limit?name=${name}`)
     }
     
 }

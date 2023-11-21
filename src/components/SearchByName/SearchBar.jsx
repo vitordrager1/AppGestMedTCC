@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import pessoaService from '../../services/pessoa.service'
 import "./SearchBar.css";
 
-export const SearchBar = ({ setResults, setName}) => {
+export const SearchBar = ({setShowResults, setResults, setName}) => {
   const [input, setInput] = useState("");
   
   useEffect(() => {
@@ -15,10 +15,7 @@ export const SearchBar = ({ setResults, setName}) => {
   function searchTitle(name) {
     pessoaService.findByName(name)
     .then(response => {
-      
-      setResults(response.data)
-      
-      console.log(response.data.map((data)=>data.nome))
+      setResults(response.data)      
     })
     .catch(e => {
     console.log(e);
@@ -30,10 +27,22 @@ export const SearchBar = ({ setResults, setName}) => {
     searchTitle(value);
   };
 
+  function showResultsTrueHandleChange () {
+    setShowResults(true)
+  }
+  function showResultsFalseChange () {
+    setTimeout(() => {
+      setShowResults(false)
+    }, 250);
+    
+  }
+
   return (
     <div className="input-wrapper">
-      <FaSearch id="search-icon" />
+      
       <input
+        onFocus={showResultsTrueHandleChange}
+        onBlur={showResultsFalseChange}
         placeholder="Pesquisar por nome"
         value={input}
         onChange={(e) => handleChange(e.target.value)}

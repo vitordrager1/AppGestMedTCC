@@ -12,8 +12,7 @@ class PessoaDataService {
     }
 
     create(data) {
-        console.log(data)
-        return http.post(`/pacientes/`, data)
+        return http.post(`/pessoas/`, data)
     }
 
     update(id, data) {

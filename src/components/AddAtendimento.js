@@ -36,14 +36,14 @@ import tipoAtendService from "../services/tipoAtend.service";
 import tipoIntervService from "../services/tipoInterv.service"
 import "../components/SearchByName/Search.css";
 import { formatInTimeZone, format } from "date-fns-tz";
-function AddAtendimento(idPessoa, cdTipoAtend) {
+function AddAtendimento({idPessoa, cdTipoAtend, nrAgendamento}) {
 	const [nrAtendimento, setNrAtendimento] = useState("");
 	const [dataAtendimento, setDataAtendimento] = useState("");
 	const [horaInicio, setHoraInicio] = useState("");
 	const [horaFim, setHoraFim] = useState("");
 	const [dsMotivo, setDsMotivo] = useState("");
 	const [idOperador, setIdOperador] = useState("");
-	const [nrAgendamento, setNrAgendamento] = useState("");
+	// const [nrAgendamento, setNrAgendamento] = useState("");
 	const [cdTipoInterv, setCdTipoInterv] = useState("");
 	const [dsTipoInterv, setDsTipoInterv] = useState([]);
 	//const [idPessoa, setIdPessoa] = useState("");
@@ -73,21 +73,20 @@ function AddAtendimento(idPessoa, cdTipoAtend) {
 	}
 
 	function handleSaveAtendimento(event) {
-		//idPessoa, cdAtend, horaFim, horaInicio, observacoes
 		event.preventDefault();
 		const dataFormat = `${dataAtendimento},00:00:00`;
 		var data = {
-			nr_atendimento: nrAtendimento,
 			dt_atendimento: dataFormat,
 			dt_horaInicio: horaInicio,
 			dt_horaFim: horaFim,
 			ds_motivo: dsMotivo,
 			id_operador: 1,
 			nr_agendamento: nrAgendamento,
-			cd_tipointerv: cdTipoInterv,
-			id_pessoa: idPessoa.id,
+			cd_tipoInterv: cdTipoInterv,
+			id_pessoa: idPessoa,
 			cd_tipoAtend: cdTipoAtend,
 		};
+		console.log(cdTipoInterv)
 		atendimentoService
 			.create(data)
 			.then((response) => {
@@ -109,7 +108,7 @@ function AddAtendimento(idPessoa, cdTipoAtend) {
 	// 		});
 	// }
 	function retListTipoInterv() {
-		tipoAtendService
+		tipoIntervService
 			.getAll()
 			.then((response) => {
 				setDsTipoInterv(response.data);

@@ -14,6 +14,7 @@ import Navbar from "./components/MenuComponent"
 import { ChakraProvider } from '@chakra-ui/react';
 import ListPaciente from './components/ListPaciente';
 import ListAgendamento from './components/ListAgendamento'
+import ListAtendimento from './components/ListAtendimento';
 import AboutUs from './components/AboutUs'
 import PainelAdministrador from './components/PainelAdministrador';
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
             <Route path='/' element={<Home/>} />
             <Route path='/pessoas' element={<ListPaciente/>} />
             <Route path='/agendamentos' element={<ListAgendamento/>} />
+            <Route path='/atendimento' element={<ListAtendimento/>} />
             <Route path='/sobre' element={<AboutUs/>} />
             <Route path='/painel' element={<PainelAdministrador/>} />
             {/* <Route path='/tutorials' element={<TutorialsList/>} />

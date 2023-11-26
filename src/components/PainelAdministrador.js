@@ -21,6 +21,7 @@ function PainelAdministrador() {
             bg={"#F54756"}
             m={7}
             p={5}
+            isDisabled={true}
           >
             Cadastrar novo Usuário
           </Button>

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import agendamentoService from "../services/agendamento.service";
+import atendimentoService from "../services/atendimento.service"
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
-import AddAtendimento from "./AddAtendimento"
 import {
 	Card,
 	CardHeader,
@@ -23,41 +23,38 @@ import {
 	Button,
 } from "@chakra-ui/react";
 import tipoAtendService from "../services/tipoAtend.service";
-import { EditIcon } from "@chakra-ui/icons";
-import EditAgendamento from "./EditAgendamento";
-export default class ListAgendamento extends Component {
+
+export default class ListAtendimento extends Component {
 	constructor(props) {
 		super(props);
-		this.retrieveAgendamento = this.retrieveAgendamento.bind(this);
+		this.retrieveAtendimento = this.retrieveAtendimento.bind(this);
 
 		this.state = {
-			agendamentos: [],
+			atendimentos: [],
 			tipoAtend: [],
 		};
 	}
 
 	async componentDidMount() {
-		await this.retrieveAgendamento();
+		await this.retrieveAtendimento();
 	}
 
-	async retrieveAgendamento() {
+	async retrieveAtendimento() {
 		try {
-			const response = await agendamentoService.getAll();
+			const response = await atendimentoService.getAll();
 			this.setState({
-				agendamentos: response.data,
+				atendimentos: response.data,
 			});
-			console.log(response.data);
-
 			// Carregar dados do tipo de atendimento para cada agendamento
-			const tipoAtendPromises = response.data.map(async (agendamento) => {
+			const tipoAtendPromises = response.data.map(async (atendimento) => {
 				const tipoAtendimento = await this.retListTipoAtend(
-					agendamento.cd_tipoAtend
+					atendimento.cd_tipoAtend
 				);
-				return { ...agendamento, tipoAtendimento };
+				return { ...atendimento, tipoAtendimento };
 			});
 
-			const agendamentosWithType = await Promise.all(tipoAtendPromises);
-			this.setState({ agendamentos: agendamentosWithType });
+			const atendimentosWithType = await Promise.all(tipoAtendPromises);
+			this.setState({ atendimentos: atendimentosWithType });
 		} catch (e) {
 			console.log(e);
 		}
@@ -74,10 +71,10 @@ export default class ListAgendamento extends Component {
 	}
 
 	render() {
-		const { agendamentos } = this.state;
+		const { atendimentos } = this.state;
 		return (
 			<Box>
-				<Header title="Agendamentos" />
+				<Header title="Atendimentos" />
 				<Box minH={"100vh"} mt={10}>
 					<Grid
 						width={"80%"}
@@ -85,13 +82,13 @@ export default class ListAgendamento extends Component {
 						gap="2"
 						margin="auto"
 					>
-						{agendamentos &&
-							agendamentos.map((agendamento) => {
+						{atendimentos &&
+							atendimentos.map((atendimento) => {
 								//const tipoAtendimento = await this.retListTipoAtend(agendamento.cd_tipoAtend)
 								return (
 									<Box
 										bg={"#F57977"}
-										key={agendamento.nr_agendamento}
+										key={atendimento.nr_atendimento}
 										boxShadow="md"
 										borderRadius="md"
 										margin={2}
@@ -107,18 +104,10 @@ export default class ListAgendamento extends Component {
 													<Heading size="md">
 														Paciente:{" "}
 														{
-															agendamento.paciente
+															atendimento.paciente
 																.pessoa.nome
 														}
 													</Heading>
-													<Box>
-														<AddAtendimento idPessoa={agendamento.IdPessoa} cdTipoAtend={agendamento.cd_tipoAtend} nrAgendamento={agendamento.nr_agendamento}/>
-														<EditAgendamento
-															id={
-																agendamento.nr_agendamento
-															}
-														/>
-													</Box>
 												</HStack>
 											</CardHeader>
 
@@ -131,8 +120,8 @@ export default class ListAgendamento extends Component {
 													<Box>
 														<Text>
 															Tipo de Atendimento:{" "}
-															{agendamento.tipoAtendimento
-																? agendamento
+															{atendimento.tipoAtendimento
+																? atendimento
 																		.tipoAtendimento
 																		.ds_tipoAtend
 																: "Carregando..."}
@@ -140,13 +129,13 @@ export default class ListAgendamento extends Component {
 														<Text>
 															Data Agendamento:{" "}
 															{
-																agendamento.dt_atendimento
+																atendimento.dt_atendimento
 															}
 														</Text>
 														<Text>
-															Observações:{" "}
-															{agendamento.ds_observacao
-																? agendamento.ds_observacao
+															Descrição motivo atendimento:{" "}
+															{atendimento.ds_motivo
+																? atendimento.ds_motivo
 																: "Sem observações"}
 														</Text>
 													</Box>

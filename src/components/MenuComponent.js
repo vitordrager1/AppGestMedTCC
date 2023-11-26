@@ -116,6 +116,14 @@ function MainNavbar() {
                     >
                       Agendamentos
                     </MenuItem>
+                    <MenuItem
+                      as={Link}
+                      textDecoration="none"
+                      _hover={{ textDecoration: "none" }}
+                      href="/atendimento"
+                    >
+                      Atendimentos
+                    </MenuItem>
                   </MenuList>
                 </Menu>
               </Stack>

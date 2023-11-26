@@ -4,7 +4,7 @@ class AtendimentoDataService {
 
 
     getAll() {
-        return http.get("/atendimento/atendimento")
+        return http.get("/atendimento")
     }
 
     get(id) {

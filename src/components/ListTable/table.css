@@ -1,0 +1,46 @@
+
+
+#agendamentos {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #agendamentos td, #agendamentos th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #agendamentos tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #agendamentos tr:hover {background-color: #ddd;}
+  
+  #agendamentos th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #E49DB3;
+    color: white;
+  }
+
+  /* .pagination {
+    display: flex;
+    text-decoration: none;
+    list-style-type: none;
+    padding: 5px;
+    margin: 5px;
+    float: right;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .paginationItems {
+    font-size: 15px;
+    margin-left: 10px;
+  }
+  
+  .paginationItems:hover {
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+    
+  } */

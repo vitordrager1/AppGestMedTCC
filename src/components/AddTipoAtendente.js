@@ -23,26 +23,26 @@ import {
 	FormErrorMessage,
 } from "@chakra-ui/react";
 
-import TipoAtendService from "../services/tipoAtend.service";
-function AddTipoAtend() {
-	const [cdTipoAtend, setCdTipoAtend] = useState("");
-	const [dsTipoAtend, setDsTipoAtend] = useState("");
+import tipoAtendenteService from "../services/tipoAtendente.service";
+function AddTipoAtendente() {
+	const [cdTipoAtendente, setCdTipoAtendente] = useState("");
+	const [dsTipoAtendente, setDsTipoAtendente] = useState("");
 	const [idOperador, setIdOperador] = useState("");
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [submitted, setSubmitted] = useState(false);
-	const isError = dsTipoAtend === "";
-	function handleDsTipoAtendChange(e) {
-		setDsTipoAtend(e.target.value);
+	const isError = dsTipoAtendente === "";
+	function handleDsTipoAtendenteChange(e) {
+		setDsTipoAtendente(e.target.value);
 	}
 
-	function handleSaveTipoAtend(event) {
+	function handleSaveTipoAtendente(event) {
 		event.preventDefault();
 		var data = {
-			cd_tipoatend: "",
-			ds_tipoatend: dsTipoAtend,
+			tp_tipoAtendente: "",
+			ds_tipoAtendente: dsTipoAtendente,
 			id_operador: 1, //idOperador
 		};
-		TipoAtendService.create(data)
+		tipoAtendenteService.create(data)
 			.then((response) => {
 				setSubmitted(true);
 				// alert("Cadastro realizado com sucesso.");
@@ -54,8 +54,8 @@ function AddTipoAtend() {
 	}
 
 	function clear() {
-		setCdTipoAtend("");
-		setDsTipoAtend("");
+		setCdTipoAtendente("");
+		setDsTipoAtendente("");
 		setIdOperador("");
 		setSubmitted(false);
 	}
@@ -75,7 +75,7 @@ function AddTipoAtend() {
 					m={7}
 					p={5}
 				>
-					Cadastrar Tipo de Atendimento
+					Cadastrar Tipo de Atendente
 				</Button>
 
 				{submitted ? (
@@ -132,21 +132,20 @@ function AddTipoAtend() {
 							onClose={onClose}
 						>
 							<ModalOverlay />
-							<form onSubmit={handleSaveTipoAtend}>
+							<form onSubmit={handleSaveTipoAtendente}>
 								<ModalContent padding="10">
 									<ModalHeader>
 										<Center>
-											Cadastro de Tipo de Atendimento
+											Cadastro de Tipo de Atendente
 										</Center>
 									</ModalHeader>
 									<ModalCloseButton color={"#F54756"} />
 									<FormControl>
 										<FormLabel>Descrição</FormLabel>
 										<Input
-											textTransform={"uppercase"}
 											type="text"
 											placeholder="Descrição do tipo de atendimento"
-											onChange={handleDsTipoAtendChange}
+											onChange={handleDsTipoAtendenteChange}
 										/>
 										{isError ? (
 											<FormHelperText color={"#DC0101"}>
@@ -190,4 +189,4 @@ function AddTipoAtend() {
 		</>
 	);
 }
-export default AddTipoAtend;
+export default AddTipoAtendente;

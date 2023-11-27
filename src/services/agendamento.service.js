@@ -7,6 +7,10 @@ class AgendamentoDataService {
         return http.get("/agendamentos/agendamentos")
     }
 
+    getAllDate(dt_atendimento) {
+        return http.get(`/agendamentos/date/${dt_atendimento}`)
+    }
+
     get(id) {
         return http.get(`/agendamentos/${id}`)
     }
@@ -15,8 +19,8 @@ class AgendamentoDataService {
         return http.post(`/agendamentos`, data)
     }
 
-    update(id, data) {
-        return http.put(`/agendamentos/${id}`, data)
+    update(nr_agendamento, data) {
+        return http.put(`/agendamentos/${nr_agendamento}`, data)
     }
 
     delete(id) {

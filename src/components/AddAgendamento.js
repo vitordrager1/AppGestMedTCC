@@ -34,9 +34,9 @@ import { SearchResultsList } from "./SearchByName/SearchResultsList";
 import agendamentoService from "../services/agendamento.service";
 import tipoAtendService from "../services/tipoAtend.service";
 import "../components/SearchByName/Search.css";
-import { formatInTimeZone, format } from "date-fns-tz";
+
 function AddAgendamento(props) {
-	const [results, setResults] = useState([]);
+	const [results, setResults] = useState([[]]);
 	const [tipoAtend, setTipoAtend] = useState([]);
 	const [idPessoa, setIdPessoa] = useState("");
 	const [nome, setNome] = useState("");
@@ -46,12 +46,17 @@ function AddAgendamento(props) {
 	const [observacoes, setObservacoes] = useState("");
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [dataAgendamento, setDataAgendamento] = useState("");
-	const [showResults, setShowResults] = useState("");
+	const [showResults, setShowResults] = useState(false);
+	const [submitted, setSubmitted] = useState(false);
 
 	const isErrorNome = nome === "";
 	const isErrorTipoAtend = cdAtend === "" || cdAtend === 0;
 	const isErrorDtAgendamento = dataAgendamento === "";
-  const isError = nome === "" || cdAtend === "" || cdAtend === 0 || dataAgendamento === "";
+	const isError =
+		nome === "" ||
+		cdAtend === "" ||
+		cdAtend === 0 ||
+		dataAgendamento === "";
 
 	function handleNomeIdChange(id, nome) {
 		setNome(nome);
@@ -89,12 +94,12 @@ function AddAgendamento(props) {
 			dt_horaFim: horaFim,
 			ds_observacao: observacoes,
 			id_operador: 1,
+			is_atendido: false,
 		};
 		agendamentoService
 			.create(data)
 			.then((response) => {
-        alert('Cadastro realizado com sucesso.')
-        window.location.reload();
+				setSubmitted(true);
 			})
 			.catch((error) => {
 				console.log(error.response.status);
@@ -112,151 +117,218 @@ function AddAgendamento(props) {
 			});
 	}
 
-  function clear(){
-    setResults([""])
-    setTipoAtend([""])
-    setIdPessoa("")
-    setNome("")
-    setCdAtend("")
-    setHoraInicio("")
-    setHoraFim("")
-    setObservacoes("")
-    setDataAgendamento("")
-  }
+	function clear() {
+		setResults([""]);
+		setTipoAtend([""]);
+		setIdPessoa("");
+		setNome("");
+		setCdAtend("");
+		setHoraInicio("");
+		setHoraFim("");
+		setObservacoes("");
+		setDataAgendamento("");
+		setSubmitted(false);
+	}
 
-
+	function onOpenClear() {
+		onOpen();
+		clear();
+	}
 
 	return (
 		<>
-			<MenuItem onClick={onOpen}>Agendamento</MenuItem>
-			<Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
-				<ModalOverlay />
-				<form onSubmit={handleSaveAgendamento}>
-					<ModalContent padding="10">
-						<ModalHeader>
-							<Center>Agendamento</Center>
-						</ModalHeader>
-						<ModalCloseButton color={"#F54756"} />
-						<FormLabel>Nome Paciente</FormLabel>
-						<FormControl>
-							<div className="search-bar-container">
-								<SearchBar
-									setShowResults={setShowResults}
-									setResults={setResults}
-									setName={nome}
-								/>
-								{showResults &&
-									results &&
-									results.length > 0 && (
-										<SearchResultsList
-											results={results}
-											onNameClick={handleNomeIdChange}
-											className="Search"
+			<Box>
+				<MenuItem onClick={onOpenClear}>Agendamento</MenuItem>
+				{submitted ? (
+					<Modal
+						blockScrollOnMount={false}
+						isOpen={isOpen}
+						onClose={onClose}
+						size={"md"}
+					>
+						<ModalOverlay />
+
+						<ModalContent padding="10">
+							<ModalHeader>
+								<Center as="b" color={"green"}>
+									Cadastro realizado com sucesso !
+								</Center>
+							</ModalHeader>
+							<ModalCloseButton color={"#F54756"} />
+							<ModalBody>
+								<Center as={"b"}>
+									Realizar novo agendamento ?
+								</Center>
+							</ModalBody>
+
+							<ModalFooter>
+								<Button
+									mt={4}
+									_hover={{ bg: "#F54756" }}
+									bg={"#F57977"}
+									color={"white"}
+									type="submit"
+									onClick={clear}
+								>
+									Sim
+								</Button>
+								<Spacer />
+								<Button
+									mt={4}
+									_hover={{ bg: "#F54756" }}
+									bg={"#F57977"}
+									color={"white"}
+									onClick={onClose}
+								>
+									Cancelar
+								</Button>
+							</ModalFooter>
+						</ModalContent>
+					</Modal>
+				) : (
+					<Modal
+						blockScrollOnMount={false}
+						isOpen={isOpen}
+						onClose={onClose}
+					>
+						<ModalOverlay />
+						<form onSubmit={handleSaveAgendamento}>
+							<ModalContent padding="10">
+								<ModalHeader>
+									<Center>Agendamento</Center>
+								</ModalHeader>
+								<ModalCloseButton color={"#F54756"} />
+								<FormLabel>Nome Paciente</FormLabel>
+								<FormControl>
+									<div className="search-bar-container">
+										<SearchBar
+											setShowResults={setShowResults}
+											setResults={setResults}
+											setName={nome}
 										/>
+										{showResults &&
+											results &&
+											results.length > 0 && (
+												<SearchResultsList
+													results={results}
+													onNameClick={
+														handleNomeIdChange
+													}
+													className="Search"
+												/>
+											)}
+										{console.log(results)}
+									</div>
+
+									{isErrorNome ? (
+										<FormHelperText color={"#DC0101"}>
+											Campo obrigatório.
+										</FormHelperText>
+									) : (
+										<FormErrorMessage>
+											Campo obrigatório.
+										</FormErrorMessage>
 									)}
-							</div>
 
-							{isErrorNome ? (
-								<FormHelperText color={"#DC0101"}>
-									Campo obrigatório.
-								</FormHelperText>
-							) : (
-								<FormErrorMessage>
-									Campo obrigatório.
-								</FormErrorMessage>
-							)}
-
-							<FormLabel>Tipo Atendimento</FormLabel>
-							<Select
-								value={cdAtend}
-								onClick={retListTipoAtend}
-								onChange={handleCdTipoAtend}
-							>
-								<option key={0} value={""}></option>
-								{tipoAtend.map((tipoAtend) => (
-									<option
-										key={tipoAtend.cd_tipoAtend}
-										value={tipoAtend.cd_tipoAtend}
+									<FormLabel>Tipo Atendimento</FormLabel>
+									<Select
+										value={cdAtend}
+										onClick={retListTipoAtend}
+										onChange={handleCdTipoAtend}
 									>
-										{tipoAtend.ds_tipoAtend}
-									</option>
-								))}
-							</Select>
-							{isErrorTipoAtend ? (
-								<FormHelperText color={"#DC0101"}>
-									Campo obrigatório.
-								</FormHelperText>
-							) : (
-								<FormErrorMessage>
-									Campo obrigatório.
-								</FormErrorMessage>
-							)}
-							<FormLabel>Data Agendamento *</FormLabel>
-							<Input
-								type="date"
-								placeholder="Data agendamento"
-								onChange={handleDataAgendamento}
-								value={dataAgendamento}
-							/>
-							{isErrorDtAgendamento ? (
-								<FormHelperText color={"#DC0101"}>
-									Campo obrigatório.
-								</FormHelperText>
-							) : (
-								<FormErrorMessage>
-									Campo obrigatório.
-								</FormErrorMessage>
-							)}
-							<FormLabel>Horário previsão de início</FormLabel>
-							<Input
-								type="time"
-								placeholder="Início"
-								onChange={handleHoraInicio}
-								value={horaInicio}
-							/>
+										<option key={0} value={""}></option>
+										{tipoAtend.map((tipoAtend) => (
+											<option
+												key={tipoAtend.cd_tipoAtend}
+												value={tipoAtend.cd_tipoAtend}
+											>
+												{tipoAtend.ds_tipoAtend}
+											</option>
+										))}
+									</Select>
+									{isErrorTipoAtend ? (
+										<FormHelperText color={"#DC0101"}>
+											Campo obrigatório.
+										</FormHelperText>
+									) : (
+										<FormErrorMessage>
+											Campo obrigatório.
+										</FormErrorMessage>
+									)}
+									<FormLabel>Data Agendamento </FormLabel>
+									<Input
+										textTransform={"uppercase"}
+										type="date"
+										placeholder="Data agendamento"
+										onChange={handleDataAgendamento}
+										value={dataAgendamento}
+									/>
+									{isErrorDtAgendamento ? (
+										<FormHelperText color={"#DC0101"}>
+											Campo obrigatório.
+										</FormHelperText>
+									) : (
+										<FormErrorMessage>
+											Campo obrigatório.
+										</FormErrorMessage>
+									)}
+									<FormLabel>
+										Horário previsão de início
+									</FormLabel>
+									<Input
+										type="time"
+										placeholder="Início"
+										onChange={handleHoraInicio}
+										value={horaInicio}
+									/>
 
-							<FormLabel>Horário previsão de Término</FormLabel>
-							<Input
-								type="time"
-								placeholder="Término"
-								onChange={handleHoraFim}
-								value={horaFim}
-							/>
+									<FormLabel>
+										Horário previsão de Término
+									</FormLabel>
+									<Input
+										type="time"
+										placeholder="Término"
+										onChange={handleHoraFim}
+										value={horaFim}
+									/>
 
-							<FormLabel>Observações</FormLabel>
-							<Input
-								type="text"
-								placeholder="Observacões"
-								onChange={handleObservacoesChange}
-								value={observacoes}
-							/>
-						</FormControl>
+									<FormLabel>Observações</FormLabel>
+									<Input
+										textTransform={"uppercase"}
+										type="text"
+										placeholder="Observacões"
+										onChange={handleObservacoesChange}
+										value={observacoes}
+									/>
+								</FormControl>
 
-						<ModalFooter>
-							<Button
-								mt={4}
-								_hover={{ bg: "#F54756" }}
-								bg={"#F57977"}
-								color={"white"}
-								type="submit"
-                isDisabled={isError}
-							>
-								Cadastrar
-							</Button>
-							<Spacer />
-							<Button
-								mt={4}
-								_hover={{ bg: "#F54756" }}
-								bg={"#F57977"}
-								color={"white"}
-								onClick={onClose}
-							>
-								Cancelar
-							</Button>
-						</ModalFooter>
-					</ModalContent>
-				</form>
-			</Modal>
+								<ModalFooter>
+									<Button
+										mt={4}
+										_hover={{ bg: "#F54756" }}
+										bg={"#F57977"}
+										color={"white"}
+										type="submit"
+										isDisabled={isError}
+									>
+										Cadastrar
+									</Button>
+									<Spacer />
+									<Button
+										mt={4}
+										_hover={{ bg: "#F54756" }}
+										bg={"#F57977"}
+										color={"white"}
+										onClick={onClose}
+									>
+										Cancelar
+									</Button>
+								</ModalFooter>
+							</ModalContent>
+						</form>
+					</Modal>
+				)}
+			</Box>
 		</>
 	);
 }

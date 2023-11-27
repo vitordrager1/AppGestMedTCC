@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Modal,
 	Select,
@@ -27,16 +27,16 @@ import {
 	AlertTitle,
 	AlertDescription,
 	Box,
+	Stack,
 	Text,
 } from "@chakra-ui/react";
-import { SearchBar } from "./SearchByName/SearchBar";
-import { SearchResultsList } from "./SearchByName/SearchResultsList";
 import atendimentoService from "../services/atendimento.service";
 import tipoAtendService from "../services/tipoAtend.service";
-import tipoIntervService from "../services/tipoInterv.service"
+import tipoIntervService from "../services/tipoInterv.service";
+import pessoaService from "../services/pessoa.service";
+import agendamentoService from "../services/agendamento.service";
 import "../components/SearchByName/Search.css";
-import { formatInTimeZone, format } from "date-fns-tz";
-function AddAtendimento({idPessoa, cdTipoAtend, nrAgendamento}) {
+function AddAtendimento({ idPessoa, cdTipoAtend, nrAgendamento }) {
 	const [nrAtendimento, setNrAtendimento] = useState("");
 	const [dataAtendimento, setDataAtendimento] = useState("");
 	const [horaInicio, setHoraInicio] = useState("");
@@ -51,6 +51,11 @@ function AddAtendimento({idPessoa, cdTipoAtend, nrAgendamento}) {
 	//const [cdAtend, setCdAtend] = useState(1);
 	const [dsTipoAtend, setDsTipoAtend] = useState("");
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const isErrorTipoInterv = cdTipoInterv === "" || cdTipoInterv === 0;
+	const isErrorDtAtendimento = dataAtendimento === "";
+	const [submitted, setSubmitted] = useState(false);
+	const isError =
+		cdTipoInterv === "" || cdTipoInterv === 0 || dataAtendimento === "";
 
 	function handleDsMotivoChange(e) {
 		setDsMotivo(e.target.value);
@@ -86,27 +91,31 @@ function AddAtendimento({idPessoa, cdTipoAtend, nrAgendamento}) {
 			id_pessoa: idPessoa,
 			cd_tipoAtend: cdTipoAtend,
 		};
-		console.log(cdTipoInterv)
+		console.log(cdTipoInterv);
 		atendimentoService
 			.create(data)
 			.then((response) => {
-				
+				setSubmitted(true)
+				handleUpdateAgendamento(nrAgendamento)
 			})
 			.catch((error) => {
+				
 				console.log(error.response.status);
 			});
 	}
 
-	// function retListTipoAtend() {
-	// 	tipoIntervService
-	// 		.getAll()
-	// 		.then((response) => {
-	// 			setTipoAtend(response.data);
-	// 		})
-	// 		.catch((e) => {
-	// 			console.log(e);
-	// 		});
-	// }
+	function retListTipoAtend() {
+		tipoAtendService
+			.get(cdTipoAtend)
+			.then((response) => {
+				console.log(response);
+				setDsTipoAtend(response.data.ds_tipoAtend);
+			})
+			.catch((e) => {
+				console.log(e);
+			});
+	}
+
 	function retListTipoInterv() {
 		tipoIntervService
 			.getAll()
@@ -120,107 +129,220 @@ function AddAtendimento({idPessoa, cdTipoAtend, nrAgendamento}) {
 
 	function retNomePaciente() {
 		//
-        setNome()
+		pessoaService
+			.get(idPessoa)
+			.then((response) => {
+				setNome(response.data.nome);
+			})
+			.catch((e) => {
+				console.log(e);
+			});
 	}
+
+	function clear() {
+		setNrAtendimento("");
+		setDataAtendimento("");
+		setHoraInicio("");
+		setHoraFim("");
+		setDsMotivo("");
+		setIdOperador("");
+		setSubmitted(false);
+	}
+
+	function onOpenClear() {
+		onOpen();
+		clear();
+	}
+
+	function handleUpdateAgendamento(nrAgendamento){
+		var data = {
+			is_atendido: true
+		}
+		agendamentoService
+			.update(nrAgendamento, data)
+			.then((response) => {
+				console.log(response)
+			})
+			.catch((e) => {
+				console.log(e);
+			});
+	}
+
+	useEffect(() => {
+		retNomePaciente();
+		retListTipoAtend();
+	}, []);
 
 	return (
 		<>
-			<Button
-				onClick={onOpen}
-				_hover={[{ bg: "#F57977" }, { color: "white" }]}
-				bg={"#F54756"}
-				m={7}
-				p={5}
-			>
-				Registrar Atendimento
-			</Button>
-			<Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
-				<ModalOverlay />
-				<form onSubmit={handleSaveAtendimento}>
-					<ModalContent padding="10">
-						<ModalHeader>
-							<Center>Atendimento</Center>
-						</ModalHeader>
-						<ModalCloseButton color={"#F54756"} />
-						<FormControl>
-							<FormLabel>Nome Paciente</FormLabel>
-							<Text>Teste</Text>
-							<FormLabel>Tipo Atendimento</FormLabel>
-							<Text>Teste 2</Text>
-							<FormLabel>Tipo Intervenção</FormLabel>
-							<Select
-								value={cdTipoInterv}
-								onClick={retListTipoInterv}
-								onChange={handleCdTipoIntervChange}
-							>
-								<option key={0} value={0}></option>
-								{dsTipoInterv.map((dsTipoInterv) => (
-									<option
-										key={dsTipoInterv.cd_tipoInterv}
-										value={dsTipoInterv.cd_tipoInterv}
+			<Box>
+				<Button
+					onClick={onOpenClear}
+					_hover={[{ bg: "#F57977" }, { color: "white" }]}
+					bg={"#F54756"}
+					m={7}
+					p={5}
+				>
+					Registrar Atendimento
+				</Button>
+				{submitted ? (
+					<Modal
+						blockScrollOnMount={false}
+						isOpen={isOpen}
+						onClose={onClose}
+						size={"md"}
+					>
+						<ModalOverlay />
+
+						<ModalContent padding="10">
+							<ModalHeader>
+								<Center as="b" color={"green"}>
+									Cadastro realizado com sucesso !
+								</Center>
+							</ModalHeader>
+							<ModalCloseButton color={"#F54756"} />
+
+							<ModalFooter>
+								<Button
+									mt={4}
+									_hover={{ bg: "#F54756" }}
+									bg={"#F57977"}
+									color={"white"}
+									type="submit"
+									onClick={onClose}
+								>
+									Ok
+								</Button>
+								
+							</ModalFooter>
+						</ModalContent>
+					</Modal>
+				) : (
+					<Modal
+						blockScrollOnMount={false}
+						isOpen={isOpen}
+						onClose={onClose}
+					>
+						<ModalOverlay />
+						<form onSubmit={handleSaveAtendimento}>
+							<ModalContent padding="10">
+								<ModalHeader>
+									<Center as={"b"} fontSize={30}>
+										Atendimento
+									</Center>
+								</ModalHeader>
+								<ModalCloseButton color={"#F54756"} />
+								<FormControl>
+									<Stack mb={5}>
+										<Text as={"b"} fontSize={30}>
+											{nome}
+										</Text>
+									</Stack>
+
+									<FormLabel as={"b"} fontSize={20}>
+										Tipo Atendimento
+									</FormLabel>
+									<Input
+										isReadOnly={true}
+										value={dsTipoAtend}
+									></Input>
+									<FormLabel>Tipo Intervenção</FormLabel>
+									<Select
+										value={cdTipoInterv}
+										onClick={retListTipoInterv}
+										onChange={handleCdTipoIntervChange}
 									>
-										{dsTipoInterv.ds_tipoInterv}
-									</option>
-								))}
-							</Select>
+										<option key={0} value={0}></option>
+										{dsTipoInterv.map((dsTipoInterv) => (
+											<option
+												key={dsTipoInterv.cd_tipoInterv}
+												value={
+													dsTipoInterv.cd_tipoInterv
+												}
+											>
+												{dsTipoInterv.ds_tipoInterv}
+											</option>
+										))}
+									</Select>
 
-							<FormLabel>Data Atendimento *</FormLabel>
-							<Input
-								type="date"
-								placeholder="Data agendamento"
-								onChange={handleDataAtendimeto}
-								value={dataAtendimento}
-							/>
+									{isErrorDtAtendimento ? (
+										<FormHelperText color={"#DC0101"}>
+											Campo obrigatório.
+										</FormHelperText>
+									) : (
+										<FormErrorMessage>
+											Campo obrigatório.
+										</FormErrorMessage>
+									)}
 
-							<FormLabel>Horário de início</FormLabel>
-							<Input
-								type="time"
-								placeholder="Início"
-								onChange={handleHoraInicio}
-								value={horaInicio}
-							/>
+									<FormLabel>Data Atendimento</FormLabel>
+									<Input
+										type="date"
+										placeholder="Data agendamento"
+										onChange={handleDataAtendimeto}
+										value={dataAtendimento}
+									/>
+									{isErrorDtAtendimento ? (
+										<FormHelperText color={"#DC0101"}>
+											Campo obrigatório.
+										</FormHelperText>
+									) : (
+										<FormErrorMessage>
+											Campo obrigatório.
+										</FormErrorMessage>
+									)}
+									<FormLabel>Horário de início</FormLabel>
+									<Input
+										type="time"
+										placeholder="Início"
+										onChange={handleHoraInicio}
+										value={horaInicio}
+									/>
 
-							<FormLabel>Horário de Término</FormLabel>
-							<Input
-								type="time"
-								placeholder="Término"
-								onChange={handleHoraFim}
-								value={horaFim}
-							/>
+									<FormLabel>Horário de Término</FormLabel>
+									<Input
+										type="time"
+										placeholder="Término"
+										onChange={handleHoraFim}
+										value={horaFim}
+									/>
 
-							<FormLabel>Descrição do Motivo</FormLabel>
-							<Input
-								type="text"
-								placeholder="Observacões"
-								onChange={handleDsMotivoChange}
-								value={dsMotivo}
-							/>
-						</FormControl>
+									<FormLabel>Descrição do Motivo</FormLabel>
+									<Input
+										type="text"
+										placeholder="Observacões"
+										onChange={handleDsMotivoChange}
+										value={dsMotivo}
+									/>
+								</FormControl>
 
-						<ModalFooter>
-							<Button
-								mt={4}
-								_hover={{ bg: "#F54756" }}
-								bg={"#F57977"}
-								color={"white"}
-								type="submit"
-							>
-								Cadastrar
-							</Button>
-							<Spacer />
-							<Button
-								mt={4}
-								_hover={{ bg: "#F54756" }}
-								bg={"#F57977"}
-								color={"white"}
-								onClick={onClose}
-							>
-								Cancelar
-							</Button>
-						</ModalFooter>
-					</ModalContent>
-				</form>
-			</Modal>
+								<ModalFooter>
+									<Button
+										mt={4}
+										_hover={{ bg: "#F54756" }}
+										bg={"#F57977"}
+										color={"white"}
+										type="submit"
+										isDisabled={isError}
+									>
+										Cadastrar
+									</Button>
+									<Spacer />
+									<Button
+										mt={4}
+										_hover={{ bg: "#F54756" }}
+										bg={"#F57977"}
+										color={"white"}
+										onClick={onClose}
+									>
+										Cancelar
+									</Button>
+								</ModalFooter>
+							</ModalContent>
+						</form>
+					</Modal>
+				)}
+			</Box>
 		</>
 	);
 }

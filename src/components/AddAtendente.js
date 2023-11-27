@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import InputMask from "react-input-mask";
 
 import {
 	Modal,
@@ -27,47 +26,38 @@ import {
 
 import PacienteDataService from "../services/paciente.service";
 import PessoaDataService from "../services/pessoa.service";
+import AtendenteDataService from "../services/atendente.service";
 
-function AddPaciente() {
+function AddAtendente() {
 	const [idPessoa, setIdPessoa] = useState(0);
 	const [nome, setNome] = useState("");
-	const [nrContato, setNrContato] = useState("");
-	const [nrContatoSec, setNrContatoSec] = useState("");
-	const [dsObservacao, setDsObservacao] = useState("");
-	const [idOperador, setIdOperador] = useState("");
-	const [dtInativacao, setDtInativacao] = useState("");
+	const [nrCpf, setNrCpf] = useState("");
+	const [cdHash, setCdHash] = useState("");
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [submitted, setSubmitted] = useState(false);
-	const isError = nome === "" || nrContato !== "" && nrContato.length < 15 && nrContatoSec !== "" && nrContatoSec.length < 15;
-	const isErrorNrContato = nrContato !== "" && nrContato.length < 15 ;
-	const isErrorNrContatoSec = nrContatoSec !== "" && nrContatoSec.length < 15 ;;
+	const isErrorNome = nome === "";
+	const isErrorCpf = nrCpf === "";
+	const isErrorHash = cdHash === "";
+	const isError = nome === "" || nrCpf === "" || cdHash === "";
 	function handleNomeChange(e) {
 		setNome(e.target.value);
 	}
 
-	function handleNrContatoChange(e) {
-		setNrContato(e.target.value);
+	function handleNrCpfChange(e) {
+		setNrCpf(e.target.value);
 	}
 
-	function handleNrContatoSecChange(e) {
-		setNrContatoSec(e.target.value);
-	}
-
-	function handleDsObservacaoChange(e) {
-		setDsObservacao(e.target.value);
-	}
-
-	function handleIdOperadorChange(e) {
-		setIdOperador(e.target.value);
+	function handleCdHashChange(e) {
+		setCdHash(e.target.value);
 	}
 
 	async function handleSavePessoa(event) {
 		event.preventDefault();
 		var data = {
 			nome: nome,
-			nrContato: nrContato,
-			nrContatoSec: nrContatoSec,
-			dsObservacao: dsObservacao,
+			nrContato: "",
+			nrContatoSec: "",
+			dsObservacao: "",
 			idOperador: 1, //idOperador
 		};
 
@@ -77,7 +67,7 @@ function AddPaciente() {
 				(response) => {
 					// setSubmitted(true);
 
-					handleSavePaciente(event, response.data.IdPessoa);
+					handleSaveAtendente(event, response.data.IdPessoa);
 				}
 			);
 
@@ -88,17 +78,17 @@ function AddPaciente() {
 		}
 	}
 
-	async function handleSavePaciente(event, id) {
+	async function handleSaveAtendente(event, id) {
 		event.preventDefault();
 		var data = {
-			IdPessoa: id,
-			// dtInativacao: moment(new Date('01/01/2001'), 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss'),
-			id_operador: 1,
+			id_pessoa: id,
+			nr_cpf: nrCpf,
+			cd_hash: cdHash,
 		};
 
 		try {
 			// Utilizando await para aguardar a resolução da Promise
-			const response = await PacienteDataService.create(data).then(
+			const response = await AtendenteDataService.create(data).then(
 				(response) => {
 					setSubmitted(true);
 
@@ -113,16 +103,10 @@ function AddPaciente() {
 		}
 	}
 
-
-
 	function clear() {
-		setIdPessoa("");
 		setNome("");
-		setNrContato("");
-		setNrContatoSec("");
-		setDsObservacao("");
-		setIdOperador("");
-		setDtInativacao("");
+		setCdHash("");
+		setNrCpf("");
 		setSubmitted(false);
 	}
 
@@ -134,7 +118,15 @@ function AddPaciente() {
 	return (
 		<>
 			<Box>
-				<MenuItem onClick={onOpenClear}>Paciente</MenuItem>
+				<Button
+					onClick={onOpenClear}
+					_hover={[{ bg: "#F57977" }, { color: "white" }]}
+					bg={"#F54756"}
+					m={7}
+					p={5}
+				>
+					Cadastrar Atendente
+				</Button>
 				{submitted ? (
 					<Modal
 						blockScrollOnMount={false}
@@ -192,7 +184,7 @@ function AddPaciente() {
 							<form onSubmit={handleSavePessoa}>
 								<ModalContent padding="10">
 									<ModalHeader>
-										<Center>Cadastro de Paciente</Center>
+										<Center>Cadastro de Atendente</Center>
 									</ModalHeader>
 									<ModalCloseButton color={"#F54756"} />
 									<FormControl>
@@ -212,71 +204,21 @@ function AddPaciente() {
 												Campo obrigatório.
 											</FormErrorMessage>
 										)}
-										<FormLabel>
-											Número de telefone
-										</FormLabel>
-										<InputGroup>
-											<InputMask
-												mask="(99) 99999-9999"
-												maskChar={null}
-												onChange={handleNrContatoChange}
-												value={nrContato}
-											>
-												{() => (
-													<Input
-														placeholder="1° Número"
-														type="text"
-													/>
-												)}
-											</InputMask>
-										</InputGroup>
-										{isErrorNrContato ? (
-											<FormHelperText color={"#DC0101"}>
-												Preencha com onze dígitos.
-											</FormHelperText>
-										) : (
-											<FormErrorMessage>
-												Campo obrigatório.
-											</FormErrorMessage>
-										)}
-										<FormLabel>
-											Número de telefone
-										</FormLabel>
-										<InputGroup>
-											<InputMask
-												mask="(99) 99999-9999"
-												maskChar={null}
-												onChange={
-													handleNrContatoSecChange
-												}
-												value={nrContatoSec}
-											>
-												{() => (
-													<Input
-														placeholder="2° Número"
-														type="text"
-													/>
-												)}
-											</InputMask>
-										</InputGroup>
-										{isErrorNrContatoSec ? (
-											<FormHelperText color={"#DC0101"}>
-												Preencha com onze dígitos.
-											</FormHelperText>
-										) : (
-											<FormErrorMessage>
-												Campo obrigatório.
-											</FormErrorMessage>
-										)}
-										<FormLabel>Observacões</FormLabel>
-										<Textarea
+
+										<FormLabel>Número CPF</FormLabel>
+										<Input
 											textTransform={"uppercase"}
-											resize="none"
 											type="text"
-											placeholder="Observacões"
-											onChange={handleDsObservacaoChange}
-											value={dsObservacao}
-										></Textarea>
+											placeholder="CPF"
+											onChange={handleNrCpfChange}
+										/>
+										<FormLabel>Senha</FormLabel>
+										<Input
+											textTransform={"uppercase"}
+											type="text"
+											placeholder="Senha"
+											onChange={handleCdHashChange}
+										/>
 									</FormControl>
 
 									<ModalFooter>
@@ -310,4 +252,4 @@ function AddPaciente() {
 		</>
 	);
 }
-export default AddPaciente;
+export default AddAtendente;

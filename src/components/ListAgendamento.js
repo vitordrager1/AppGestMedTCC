@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import agendamentoService from "../services/agendamento.service";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
+import { format } from "date-fns-tz";
 import AddAtendimento from "./AddAtendimento"
 import {
 	Card,
@@ -87,6 +88,7 @@ export default class ListAgendamento extends Component {
 					>
 						{agendamentos &&
 							agendamentos.map((agendamento) => {
+								var dataFormatada = new Date(agendamento.dt_atendimento)
 								//const tipoAtendimento = await this.retListTipoAtend(agendamento.cd_tipoAtend)
 								return (
 									<Box
@@ -139,9 +141,7 @@ export default class ListAgendamento extends Component {
 														</Text>
 														<Text>
 															Data Agendamento:{" "}
-															{
-																agendamento.dt_atendimento
-															}
+															{format(dataFormatada, "dd-MM-yyyy")}
 														</Text>
 														<Text>
 															Observações:{" "}

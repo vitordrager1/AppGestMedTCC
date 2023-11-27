@@ -26,7 +26,7 @@ import {
 } from "@chakra-ui/react";
 import agendamentoService from "../services/agendamento.service";
 import tipoAtendService from "../services/tipoAtend.service";
-import { formatInTimeZone, format } from "date-fns-tz";
+import { format } from "date-fns-tz";
 
 function EditAgendamento(id) {
 	const [cdAtend, setCdAtend] = useState(1);

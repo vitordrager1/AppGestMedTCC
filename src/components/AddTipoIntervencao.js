@@ -20,7 +20,7 @@ import {
 	Spacer,
 	Box,
 	FormHelperText,
-	FormErrorMessage
+	FormErrorMessage,
 } from "@chakra-ui/react";
 
 import TipoIntervService from "../services/tipoInterv.service";
@@ -89,7 +89,7 @@ function AddTipoInterv() {
 
 						<ModalContent padding="10">
 							<ModalHeader>
-								<Center as="b" color={'green'}>
+								<Center as="b" color={"green"}>
 									Cadastro realizado com sucesso !
 								</Center>
 							</ModalHeader>
@@ -142,6 +142,7 @@ function AddTipoInterv() {
 								<FormControl>
 									<FormLabel>Descrição</FormLabel>
 									<Input
+										textTransform={"uppercase"}
 										type="text"
 										placeholder="Descrição do tipo de atendimento"
 										onChange={handleDsTipoIntervChange}

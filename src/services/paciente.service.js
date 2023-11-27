@@ -28,7 +28,7 @@ class PacienteDataService {
     }
 
     findByName(name) {
-        return http.get(`pacientes?name=${name}`)
+        return http.get(`pacientes/pacientes/limit?name=${name}`)
     }
 }
 

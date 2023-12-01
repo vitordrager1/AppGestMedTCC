@@ -91,11 +91,7 @@ function EditAgendamento(id) {
 		agendamentoService
         .update(id.id, data)
         .then((response) => {
-                console.log(data)
-				if (response.status == 200) {
-					alert("Agendamento atualizado!");
-					window.location.reload();
-				}
+
 			})
 			.catch((e) => {
 				console.log(e);
@@ -123,8 +119,8 @@ function EditAgendamento(id) {
 			<IconButton
 				aria-label="Edit"
 				icon={<EditIcon />}
-				bg={"#F57977"}
-				color={"white"}
+				bg={"#0C59F5"}
+				color={"#30302f"}
 				onClick={onOpen}
 			/>
 			<Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
@@ -132,9 +128,9 @@ function EditAgendamento(id) {
 				<form onSubmit={handleUpdateAgendamento}>
 					<ModalContent padding="10">
 						<ModalHeader>
-							<Center>Editar Dados Agendamento</Center>
+							<Center>Editar Agendamento</Center>
 						</ModalHeader>
-						<ModalCloseButton color={"#F54756"} />
+						<ModalCloseButton color={"#30302f"} />
 						<FormControl>
 							<FormLabel>Tipo Atendimento</FormLabel>
 							<Select
@@ -153,7 +149,7 @@ function EditAgendamento(id) {
 								))}
 							</Select>
 
-							<FormLabel>Data Agendamento *</FormLabel>
+							<FormLabel>Data Agendamento </FormLabel>
 							<Input
 								type="date"
 								placeholder="Data agendamento"
@@ -164,7 +160,7 @@ function EditAgendamento(id) {
 							<FormLabel>Horário previsão de início</FormLabel>
 							<Input
 								type="time"
-								placeholder="Início"
+								placeholder="Início"	
 								onChange={handleHoraInicioChange}
 								value={horaInicio}
 							/>
@@ -187,7 +183,6 @@ function EditAgendamento(id) {
 
 							<Stack mt={8} spacing={5} direction="row">
 								<Checkbox
-									colorScheme="red"
 									onChange={handleStAtendimentoChange}
 									value={inCancelado}
 								>
@@ -199,8 +194,7 @@ function EditAgendamento(id) {
 						<ModalFooter>
 							<Button
 								mt={4}
-								_hover={{ bg: "#F54756" }}
-								bg={"#F57977"}
+								_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 								color={"white"}
 								type="submit"
 							>
@@ -209,8 +203,7 @@ function EditAgendamento(id) {
 							<Spacer />
 							<Button
 								mt={4}
-								_hover={{ bg: "#F54756" }}
-								bg={"#F57977"}
+								_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 								color={"white"}
 								onClick={onClose}
 							>

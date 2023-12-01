@@ -55,7 +55,7 @@ export default class ListPaciente extends Component {
     const { pacientes } = this.state;
     return (
       <Box>
-        <Header title="Lista de Pacientes" />
+        <Header />
         <Box minH={"100vh"} mt={10}>
           <Grid
             width={"80%"}
@@ -66,32 +66,30 @@ export default class ListPaciente extends Component {
             {pacientes &&
               pacientes.map((pacientes) => (
                 <Box
-                  bg={"#F57977"}
+                  bg={"#02D09D"}
                   key={pacientes.IdPessoa}
                   boxShadow="md"
-                  borderRadius="md"
                   margin={2}
                 >
-                  <Card bg="tomato">
-                    <CardHeader bg={"#F54756"} color={"white"}>
+                  <Card >
+                    <CardHeader bg={"#02D09D"} color={"#30302f"}>
                       <HStack justify={"space-between"}>
-                        <Heading size="md">{pacientes.nome}</Heading>
+                        <Heading size="md" >{pacientes.nome}</Heading>
                         <EditPaciente id={pacientes.IdPessoa}/>
                       </HStack>
                     </CardHeader>
 
                     <CardBody
-                      bg={"#F57977"}
-                      color={"white"}
-                      fontFamily={"Arial"}
+                      bg={"#93D6C6"}
+                      color={"#30302f"}
+                      // fontFamily={"Arial"}
                     >
                       <HStack spacing="4">
                         <Box>
-                          <Text pt="2" fontSize="sm">
-                            Telefones:{pacientes.nr_contato} -{" "}
-                            {pacientes.nr_contatosec}
+                          <Text fontSize="sm" fontWeight='semibold'>
+                            Telefones: {pacientes.nr_contato} - {" "} {pacientes.nr_contatosec}
                           </Text>
-                          <Text>Observações: {pacientes.ds_observacao}</Text>
+                          <Text fontSize="sm" fontWeight='semibold' >Observações: {pacientes.ds_observacao}</Text>
                         </Box>
                       </HStack>
                     </CardBody>

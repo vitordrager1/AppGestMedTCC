@@ -24,36 +24,17 @@ const ListAgendamentoDate = ({ dados, itemsPerPage }) => {
 		setNome(e.target.value);
 	}
 
-	const retListTipoAtend = useCallback(
-		async (cdTipoAtend) => {
-		  try {
-			const response = await tipoAtendService.get(cdTipoAtend);
-			setDsTipoAtend(response.data.ds_tipoAtend);
-		  } catch (e) {
-			console.log(e);
-		  }
-		},
-		[] // Sem dependências
-	  );
-	
-	  useEffect(() => {
-		const fetchDataForItems = async () => {
-		  for (const item of currentItems) {
-			await retListTipoAtend(item.cd_tipoAtend);
-		  }
-		};
-	
-		fetchDataForItems();
-	  }, [currentItems, retListTipoAtend]);
 	return (
 		<div className="bgTableList">
 			<Table id="agendamentos" striped bordered hover>
 				<thead>
 					<tr>
-						<th className="title">Nr Agendamento</th>
+						<th className="title">Agendamento</th>
 						<th className="title">Nome</th>
 						<th className="title">Tipo Atendimento</th>
 						<th className="title">Data Atendimento</th>
+						<th className="title">Hora Ínicio</th>
+						<th className="title">Hora Término</th>
 						{/* Adicione mais colunas conforme necessário */}
 					</tr>
 				</thead>
@@ -67,17 +48,18 @@ const ListAgendamentoDate = ({ dados, itemsPerPage }) => {
 								<tr key={item.nr_agendamento}>
 									<td>{item.nr_agendamento}</td>
 									<td>{item.paciente.pessoa.nome}</td>
-									<td>{dsTipoAtend}</td>
+									<td>{item.tipoAtendimento.ds_tipoAtend}</td>
 									<td>
 										{format(dataFormatada, "dd-MM-yyyy")}
 									</td>
+									<td>{item.dt_horaInicio}</td>
+									<td>{item.dt_horaFim}</td>
 									{/* Adicione mais colunas conforme necessário */}
 								</tr>
 							);
 						})}
 				</tbody>
 			</Table>
-
 			<Pagination className="pagination">
 				<Pagination.Prev
 					className="paginationItems"

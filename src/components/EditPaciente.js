@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import InputMask from "react-input-mask";
-import { AttachmentIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import {
 	Modal,
 	ModalOverlay,
@@ -19,17 +19,19 @@ import {
 	Textarea,
 	Spacer,
 	IconButton,
+	FormErrorMessage,
+	FormHelperText,
 } from "@chakra-ui/react";
 import pessoaService from "../services/pessoa.service";
-import TipoAtendService from "../services/tipoAtend.service";
-import { Alert } from "bootstrap";
+
 function EditPaciente(id) {
 	const [nome, setNome] = useState("");
 	const [nrContato, setNrContato] = useState("");
 	const [nrContatoSec, setNrContatoSec] = useState("");
 	const [dsObservacao, setDsObservacao] = useState("");
 	const { isOpen, onOpen, onClose } = useDisclosure();
-
+	const [submitted, setSubmitted] = useState(false);
+	const isError = nome === "";
 	function handleNomeChange(e) {
 		setNome(e.target.value);
 	}
@@ -58,6 +60,7 @@ function EditPaciente(id) {
 	}
 
 	function handleUpdatePaciente(event) {
+		event.preventDefault();
 		var data = {
 			id: id.id,
 			nome: nome,
@@ -66,90 +69,59 @@ function EditPaciente(id) {
 			ds_observacao: dsObservacao,
 		};
 		pessoaService
-			.update(id.id,data)
+			.update(id.id, data)
 			.then((response) => {
-				if(response.status == 200){
-					alert("Paciente atualizado!");
-					window.location.reload();
+				if (response.status == 200) {
+					setSubmitted(true);
 				}
 			})
 			.catch((e) => {
 				console.log(e);
 			});
 	}
+	function clear() {
+		setSubmitted(false);
+	}
 
-	useEffect(()=>{
-		retrievePaciente()
-	},[]);
+	function onOpenClear() {
+		onOpen();
+		clear();
+	}
+
+	function onCloseReload() {
+		onClose();
+		window.location.reload();
+	}
+
+	useEffect(() => {
+		retrievePaciente();
+	}, []);
 
 	return (
 		<>
 			<IconButton
 				aria-label="Edit"
 				icon={<EditIcon />}
-				bg={"#F57977"}
+				bg={"#0C59F5"}
 				color={"white"}
-				onClick={onOpen}
+				onClick={onOpenClear}
 			/>
-			<Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
-				<ModalOverlay />
-				<form onSubmit={handleUpdatePaciente}>
+			{submitted ? (
+				<Modal
+					blockScrollOnMount={false}
+					isOpen={isOpen}
+					onClose={onClose}
+					size={"md"}
+				>
+					<ModalOverlay />
+
 					<ModalContent padding="10">
 						<ModalHeader>
-							<Center>Editar Dados Paciente</Center>
+							<Center as="b" color={"green"}>
+								Cadastro realizado com sucesso !
+							</Center>
 						</ModalHeader>
 						<ModalCloseButton color={"#F54756"} />
-						<FormControl>
-							<FormLabel>Nome</FormLabel>
-							<Input
-								type="text"
-								placeholder="Nome completo"
-								onChange={handleNomeChange}
-								value={nome}
-							/>
-							<FormLabel>Número de telefone</FormLabel>
-							<InputGroup>
-								<InputMask
-									mask="(99) 99999-9999"
-									maskChar={null}
-									onChange={handleNrContatoChange}
-									value={nrContato}
-								>
-									{() => (
-										<Input
-											placeholder="1° Número"
-											type="text"
-										/>
-									)}
-								</InputMask>
-							</InputGroup>
-
-							<FormLabel>Número de telefone</FormLabel>
-							<InputGroup>
-								<InputMask
-									mask="(99) 99999-9999"
-									maskChar={null}
-									onChange={handleNrContatoSecChange}
-									value={nrContatoSec}
-								>
-									{() => (
-										<Input
-											placeholder="2° Número"
-											type="text"
-										/>
-									)}
-								</InputMask>
-							</InputGroup>
-
-							<FormLabel>Observacões</FormLabel>
-							<Textarea
-								resize="none"
-								type="text"
-								placeholder="Observacões"
-								onChange={handleDsObservacaoChange}
-								value={dsObservacao}
-							></Textarea>
-						</FormControl>
 
 						<ModalFooter>
 							<Button
@@ -158,23 +130,107 @@ function EditPaciente(id) {
 								bg={"#F57977"}
 								color={"white"}
 								type="submit"
+								onClick={onCloseReload}
 							>
-								Atualizar
-							</Button>
-							<Spacer />
-							<Button
-								mt={4}
-								_hover={{ bg: "#F54756" }}
-								bg={"#F57977"}
-								color={"white"}
-								onClick={onClose}
-							>
-								Cancelar
+								Ok
 							</Button>
 						</ModalFooter>
 					</ModalContent>
-				</form>
-			</Modal>
+				</Modal>
+			) : (
+				<Modal
+					blockScrollOnMount={false}
+					isOpen={isOpen}
+					onClose={onClose}
+				>
+					<ModalOverlay />
+					<form onSubmit={handleUpdatePaciente}>
+						<ModalContent padding="10">
+							<ModalHeader>
+								<Center>Editar Dados Paciente</Center>
+							</ModalHeader>
+							<ModalCloseButton color={"#30302f"} />
+							<FormControl>
+								<FormLabel>Nome</FormLabel>
+								<Input
+									type="text"
+									placeholder="Nome completo"
+									onChange={handleNomeChange}
+									value={nome}
+									textTransform={"uppercase"}
+								/>
+								<FormLabel>Número de telefone</FormLabel>
+								<InputGroup>
+									<InputMask
+										mask="(99) 99999-9999"
+										maskChar={null}
+										onChange={handleNrContatoChange}
+										value={nrContato}
+										textTransform={"uppercase"}
+									>
+										{() => (
+											<Input
+												placeholder="1° Número"
+												type="text"
+											/>
+										)}
+									</InputMask>
+								</InputGroup>
+
+								<FormLabel>Número de telefone</FormLabel>
+								<InputGroup>
+									<InputMask
+										mask="(99) 99999-9999"
+										maskChar={null}
+										onChange={handleNrContatoSecChange}
+										value={nrContatoSec}
+										textTransform={"uppercase"}
+									>
+										{() => (
+											<Input
+												placeholder="2° Número"
+												type="text"
+											/>
+										)}
+									</InputMask>
+								</InputGroup>
+
+								<FormLabel>Observacões</FormLabel>
+								<Textarea
+									resize="none"
+									type="text"
+									placeholder="Observacões"
+									onChange={handleDsObservacaoChange}
+									value={dsObservacao}
+									textTransform={"uppercase"}
+								></Textarea>
+							</FormControl>
+
+							<ModalFooter>
+								<Button
+									mt={4}
+									_hover={{ bg: "#0CA3F5" }}
+									bg={"#0C59F5"}
+									color={"white"}
+									type="submit"
+								>
+									Atualizar
+								</Button>
+								<Spacer />
+								<Button
+									mt={4}
+									_hover={{ bg: "#0CA3F5" }}
+									bg={"#0C59F5"}
+									color={"white"}
+									onClick={onClose}
+								>
+									Cancelar
+								</Button>
+							</ModalFooter>
+						</ModalContent>
+					</form>
+				</Modal>
+			)}
 		</>
 	);
 }

@@ -7,6 +7,11 @@ class AtendenteDataService {
         return http.get("/atendente/")
     }
 
+    getLogin(nr_cpf) {
+        console.log(nr_cpf)
+        return http.get(`/atendente?nr_cpf=${nr_cpf}`)
+    }
+
     get(id) {
         return http.get(`/atendente/${id}`)
     }

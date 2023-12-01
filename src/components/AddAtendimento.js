@@ -176,13 +176,7 @@ function AddAtendimento({ idPessoa, cdTipoAtend, nrAgendamento }) {
 	return (
 		<>
 			<Box>
-				<Button
-					onClick={onOpenClear}
-					_hover={[{ bg: "#F57977" }, { color: "white" }]}
-					bg={"#F54756"}
-					m={7}
-					p={5}
-				>
+				<Button onClick={onOpenClear} _hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}>
 					Registrar Atendimento
 				</Button>
 				{submitted ? (
@@ -200,13 +194,12 @@ function AddAtendimento({ idPessoa, cdTipoAtend, nrAgendamento }) {
 									Cadastro realizado com sucesso !
 								</Center>
 							</ModalHeader>
-							<ModalCloseButton color={"#F54756"} />
+							<ModalCloseButton color={"#30302f"} />
 
 							<ModalFooter>
 								<Button
 									mt={4}
-									_hover={{ bg: "#F54756" }}
-									bg={"#F57977"}
+									_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 									color={"white"}
 									type="submit"
 									onClick={onClose}
@@ -226,20 +219,17 @@ function AddAtendimento({ idPessoa, cdTipoAtend, nrAgendamento }) {
 						<ModalOverlay />
 						<form onSubmit={handleSaveAtendimento}>
 							<ModalContent padding="10">
-								<ModalHeader>
-									<Center as={"b"} fontSize={30}>
-										Atendimento
-									</Center>
+								<ModalHeader align='center'>
+									Registrar Atendimento
 								</ModalHeader>
-								<ModalCloseButton color={"#F54756"} />
+								<ModalCloseButton color={"#30302f"} />
 								<FormControl>
-									<Stack mb={5}>
-										<Text as={"b"} fontSize={30}>
-											{nome}
-										</Text>
-									</Stack>
+									<FormLabel>
+										Agendamento
+									</FormLabel>
+									<Input type="text" value={nrAgendamento + " - " + nome} isDisabled={true}/>
 
-									<FormLabel as={"b"} fontSize={20}>
+									<FormLabel as={"b"}>
 										Tipo Atendimento
 									</FormLabel>
 									<Input
@@ -319,8 +309,7 @@ function AddAtendimento({ idPessoa, cdTipoAtend, nrAgendamento }) {
 								<ModalFooter>
 									<Button
 										mt={4}
-										_hover={{ bg: "#F54756" }}
-										bg={"#F57977"}
+										_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 										color={"white"}
 										type="submit"
 										isDisabled={isError}
@@ -330,8 +319,7 @@ function AddAtendimento({ idPessoa, cdTipoAtend, nrAgendamento }) {
 									<Spacer />
 									<Button
 										mt={4}
-										_hover={{ bg: "#F54756" }}
-										bg={"#F57977"}
+										_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 										color={"white"}
 										onClick={onClose}
 									>

@@ -4,7 +4,7 @@ import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
 import Calendar from "./CalenderComponent";
 import ListAgendamentoDate from "./ListAgendamentoDate";
-import List2 from "./List2";
+
 import agendamentoService from "../services/agendamento.service";
 import { format } from "date-fns-tz";
 function Home() {
@@ -34,11 +34,12 @@ function Home() {
 	}, [dataAgendamento]);
 	return (
 		<Box>
-			<Header title={"Farmácia Escola"} />
-			<Box h={"100vh"} mt={10}>
+			<Header />
+			{/* <Box > h={"100vh"} mt={10} */}
+			<Box>
 				<Flex m="10">
 					<Spacer />
-					<Box boxShadow={5} borderRadius={5} p={2} bg={"#F57977"}>
+					<Box boxShadow={5} borderRadius={5} p={2} bg={"#02E09D"}>
 						<Calendar onDateChange={retrieveAgendamento} />
 					</Box>
 					<Spacer></Spacer>

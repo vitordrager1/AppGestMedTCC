@@ -120,10 +120,11 @@ function AddAtendente() {
 			<Box>
 				<Button
 					onClick={onOpenClear}
-					_hover={[{ bg: "#F57977" }, { color: "white" }]}
-					bg={"#F54756"}
-					m={7}
+					_hover={[{ color: "white" }]}
+					bg={"#02E09D"}
+					m={3}
 					p={5}
+					w='90%'
 				>
 					Cadastrar Atendente
 				</Button>
@@ -142,7 +143,7 @@ function AddAtendente() {
 									Cadastro realizado com sucesso !
 								</Center>
 							</ModalHeader>
-							<ModalCloseButton color={"#F54756"} />
+							<ModalCloseButton color={"#30302f"} />
 							<ModalBody>
 								<Center as={"b"}>
 									Realizar novo cadastro ?
@@ -152,8 +153,7 @@ function AddAtendente() {
 							<ModalFooter>
 								<Button
 									mt={4}
-									_hover={{ bg: "#F54756" }}
-									bg={"#F57977"}
+									_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 									color={"white"}
 									type="submit"
 									onClick={clear}
@@ -163,8 +163,7 @@ function AddAtendente() {
 								<Spacer />
 								<Button
 									mt={4}
-									_hover={{ bg: "#F54756" }}
-									bg={"#F57977"}
+									_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 									color={"white"}
 									onClick={onClose}
 								>
@@ -186,7 +185,7 @@ function AddAtendente() {
 									<ModalHeader>
 										<Center>Cadastro de Atendente</Center>
 									</ModalHeader>
-									<ModalCloseButton color={"#F54756"} />
+									<ModalCloseButton color={"#30302f"} />
 									<FormControl>
 										<FormLabel>Nome</FormLabel>
 										<Input
@@ -195,7 +194,7 @@ function AddAtendente() {
 											placeholder="Nome completo"
 											onChange={handleNomeChange}
 										/>
-										{isError ? (
+										{isErrorNome ? (
 											<FormHelperText color={"#DC0101"}>
 												Campo obrigatório.
 											</FormHelperText>
@@ -212,6 +211,15 @@ function AddAtendente() {
 											placeholder="CPF"
 											onChange={handleNrCpfChange}
 										/>
+										{isErrorCpf ? (
+											<FormHelperText color={"#DC0101"}>
+												Campo obrigatório.
+											</FormHelperText>
+										) : (
+											<FormErrorMessage>
+												Campo obrigatório.
+											</FormErrorMessage>
+										)}
 										<FormLabel>Senha</FormLabel>
 										<Input
 											textTransform={"uppercase"}
@@ -219,13 +227,21 @@ function AddAtendente() {
 											placeholder="Senha"
 											onChange={handleCdHashChange}
 										/>
+										{isErrorHash ? (
+											<FormHelperText color={"#DC0101"}>
+												Campo obrigatório.
+											</FormHelperText>
+										) : (
+											<FormErrorMessage>
+												Campo obrigatório.
+											</FormErrorMessage>
+										)}
 									</FormControl>
 
 									<ModalFooter>
 										<Button
 											mt={4}
-											_hover={{ bg: "#F54756" }}
-											bg={"#F57977"}
+											_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 											color={"white"}
 											type="submit"
 											isDisabled={isError}
@@ -235,8 +251,7 @@ function AddAtendente() {
 										<Spacer />
 										<Button
 											mt={4}
-											_hover={{ bg: "#F54756" }}
-											bg={"#F57977"}
+											_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 											color={"white"}
 											onClick={onClose}
 										>

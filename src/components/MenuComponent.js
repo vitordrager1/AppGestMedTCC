@@ -38,32 +38,32 @@ function MainNavbar() {
 
   return (
     <>
-      <Button bg="#F54756" onClick={onOpen} color={"white"}>
+      <Button bg="#02E09D" onClick={onOpen} color={"white"}>
         <Icon as={HamburgerIcon} />
       </Button>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
-        <DrawerOverlay />
-        <DrawerContent bg={"#F57977"}>
-          <DrawerCloseButton color={"white"} />
-          <DrawerHeader borderBottomWidth="1px" color={"white"}>
+        <DrawerOverlay/>
+        <DrawerContent bg={"#f7f6f0"}>
+          <DrawerCloseButton color={"#30302f"} />
+          <DrawerHeader borderBottomWidth="1px" borderColor={"#30302f"}>
             Menu
           </DrawerHeader>
           <DrawerBody>
             <Flex alignItems="left" flexDirection="column">
-              <Stack spacing={30}>
+              <Stack spacing={30} >
                 <Menu>
                   <MenuItem
                     float={"center"}
                     borderRadius={5}
-                    color={"white"}
-                    bg={"#F54756"}
+                    color={"#30302f"}
+                    bg={"#02E09D"}
                     textDecoration={"none"}
-                    _hover={[{ textDecoration: "none" }, { color: "black" }]}
+                    _hover={[{ textDecoration: "none" }, { color: "white" }]}
                     as={Link}
-                    href="/"
+                    href="/home"
                     display="flex" // Tornar o conteúdo flexível
                     justifyContent={"center"}
-                    fontFamily={"Arial"}
+                    fontWeight='semibold'
                   >
                     Início
                   </MenuItem>
@@ -72,21 +72,21 @@ function MainNavbar() {
                   <MenuItem
                     float={"center"}
                     borderRadius={5}
-                    color={"white"}
-                    bg={"#F54756"}
+                    color={"#30302f"}
+                    bg={"#02E09D"}
                     textDecoration={"none"}
-                    _hover={[{ textDecoration: "none" }, { color: "black" }]}
+                    _hover={[{ textDecoration: "none" }, { color: "white" }]}
                     as={Link}
                     href="painel"
                     display="flex" // Tornar o conteúdo flexível
                     justifyContent={"center"}
-                    fontFamily={"Arial"}
+                    fontWeight='semibold'
                   >
                     Painel do administrador
                   </MenuItem>
                 </Menu>
                 <Menu>
-                  <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                  <MenuButton as={Button} rightIcon={<ChevronDownIcon />} color={"#30302f"} bg={"#02E09D"}>
                     Cadastrar
                   </MenuButton>
                   <MenuList>
@@ -96,7 +96,7 @@ function MainNavbar() {
                 </Menu>
 
                 <Menu>
-                  <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                  <MenuButton as={Button} rightIcon={<ChevronDownIcon />} color={"#30302f"} bg={"#02E09D"}>
                     Consultar
                   </MenuButton>
                   <MenuList>
@@ -125,6 +125,23 @@ function MainNavbar() {
                       Atendimentos
                     </MenuItem>
                   </MenuList>
+                </Menu>
+                <Menu>
+                  <MenuItem
+                    float={"center"}
+                    borderRadius={5}
+                    color={"#30302f"}
+                    bg={"#02E09D"}
+                    textDecoration={"none"}
+                    _hover={[{ textDecoration: "none" }, { color: "white" }]}
+                    as={Link}
+                    href="/"
+                    display="flex" // Tornar o conteúdo flexível
+                    justifyContent={"center"}
+                    fontWeight='semibold'
+                  >
+                    Sair
+                  </MenuItem>
                 </Menu>
               </Stack>
             </Flex>

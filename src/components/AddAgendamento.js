@@ -154,7 +154,7 @@ function AddAgendamento(props) {
 									Cadastro realizado com sucesso !
 								</Center>
 							</ModalHeader>
-							<ModalCloseButton color={"#F54756"} />
+							<ModalCloseButton color={"#30302f"} />
 							<ModalBody>
 								<Center as={"b"}>
 									Realizar novo agendamento ?
@@ -164,8 +164,7 @@ function AddAgendamento(props) {
 							<ModalFooter>
 								<Button
 									mt={4}
-									_hover={{ bg: "#F54756" }}
-									bg={"#F57977"}
+									_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 									color={"white"}
 									type="submit"
 									onClick={clear}
@@ -175,8 +174,7 @@ function AddAgendamento(props) {
 								<Spacer />
 								<Button
 									mt={4}
-									_hover={{ bg: "#F54756" }}
-									bg={"#F57977"}
+									_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 									color={"white"}
 									onClick={onClose}
 								>
@@ -197,7 +195,7 @@ function AddAgendamento(props) {
 								<ModalHeader>
 									<Center>Agendamento</Center>
 								</ModalHeader>
-								<ModalCloseButton color={"#F54756"} />
+								<ModalCloseButton color={"#30302f"} />
 								<FormLabel>Nome Paciente</FormLabel>
 								<FormControl>
 									<div className="search-bar-container">
@@ -305,8 +303,7 @@ function AddAgendamento(props) {
 								<ModalFooter>
 									<Button
 										mt={4}
-										_hover={{ bg: "#F54756" }}
-										bg={"#F57977"}
+										_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 										color={"white"}
 										type="submit"
 										isDisabled={isError}
@@ -316,8 +313,7 @@ function AddAgendamento(props) {
 									<Spacer />
 									<Button
 										mt={4}
-										_hover={{ bg: "#F54756" }}
-										bg={"#F57977"}
+										_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 										color={"white"}
 										onClick={onClose}
 									>

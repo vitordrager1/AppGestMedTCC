@@ -75,7 +75,7 @@ export default class ListAtendimento extends Component {
 		const { atendimentos } = this.state;
 		return (
 			<Box>
-				<Header title="Atendimentos" />
+				<Header/>
 				<Box minH={"100vh"} mt={10}>
 					<Grid
 						width={"80%"}
@@ -90,7 +90,7 @@ export default class ListAtendimento extends Component {
 								//const tipoAtendimento = await this.retListTipoAtend(agendamento.cd_tipoAtend)
 								return (
 									<Box
-										bg={"#F57977"}
+										bg={"#02D09D"}
 										key={atendimento.nr_atendimento}
 										boxShadow="md"
 										borderRadius="md"
@@ -98,14 +98,14 @@ export default class ListAtendimento extends Component {
 									>
 										<Card bg="tomato">
 											<CardHeader
-												bg={"#F54756"}
-												color={"white"}
+												bg={"#02D09D"}
+												color={"#30302f"}
 											>
 												<HStack
 													justify={"space-between"}
 												>
 													<Heading size="md">
-														Paciente:{" "}
+														{atendimento.nr_atendimento} - {" "}
 														{
 															atendimento.paciente
 																.pessoa.nome
@@ -115,9 +115,10 @@ export default class ListAtendimento extends Component {
 											</CardHeader>
 
 											<CardBody
-												bg={"#F57977"}
-												color={"white"}
-												fontFamily={"Arial"}
+												bg={"#93D6C6"}
+												color={"#30302f"}
+												// fontFamily={"Arial"}
+												fontWeight='semibold'
 											>
 												<HStack spacing="4">
 													<Box>

@@ -3,20 +3,11 @@ import React from "react";
 
 function Footer() {
   return (
-    <Box bg="#F57977" color="white" py="2" mt={140}>
+    <Box bg="#e6e4dc" color="#30302f" py="3vh" mt={'22vh'}>
       <Container maxW="container.lg">
-        <Flex justifyContent="space-between" alignItems="center">
-          <Text fontSize="xl">Farmácia-Escola</Text>
-          <Box>
-            <Link mr="4" href="sobre">
-              Sobre Nós
-            </Link>
-            <Text>Contato: (99) 99999-9999</Text>
-          </Box>
+        <Flex justifyContent="center" alignItems="center">
+          <Text fontSize="xl">Farmácia-Escola Integrado - © {new Date().getFullYear()} Todos os direitos reservados.</Text>
         </Flex>
-        <Text mt="4">
-          © {new Date().getFullYear()} Todos os direitos reservados.
-        </Text>
       </Container>
     </Box>
   );

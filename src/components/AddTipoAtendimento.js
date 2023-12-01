@@ -70,10 +70,11 @@ function AddTipoAtend() {
 			<Box>
 				<Button
 					onClick={onOpenClear}
-					_hover={[{ bg: "#F57977" }, { color: "white" }]}
-					bg={"#F54756"}
-					m={7}
+					_hover={[{ color: "white" }]}
+					bg={"#02E09D"}
+					m={3}
 					p={5}
+					w='90%'
 				>
 					Cadastrar Tipo de Atendimento
 				</Button>
@@ -93,7 +94,7 @@ function AddTipoAtend() {
 									Cadastro realizado com sucesso !
 								</Center>
 							</ModalHeader>
-							<ModalCloseButton color={"#F54756"} />
+							<ModalCloseButton color={"#30302f"} />
 							<ModalBody>
 								<Center as={"b"}>
 									Realizar novo cadastro ?
@@ -103,8 +104,7 @@ function AddTipoAtend() {
 							<ModalFooter>
 								<Button
 									mt={4}
-									_hover={{ bg: "#F54756" }}
-									bg={"#F57977"}
+									_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 									color={"white"}
 									type="submit"
 									onClick={clear}
@@ -114,8 +114,7 @@ function AddTipoAtend() {
 								<Spacer />
 								<Button
 									mt={4}
-									_hover={{ bg: "#F54756" }}
-									bg={"#F57977"}
+									_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 									color={"white"}
 									onClick={onClose}
 								>
@@ -139,7 +138,7 @@ function AddTipoAtend() {
 											Cadastro de Tipo de Atendimento
 										</Center>
 									</ModalHeader>
-									<ModalCloseButton color={"#F54756"} />
+									<ModalCloseButton color={"#30302f"} />
 									<FormControl>
 										<FormLabel>Descrição</FormLabel>
 										<Input
@@ -162,8 +161,7 @@ function AddTipoAtend() {
 									<ModalFooter>
 										<Button
 											mt={4}
-											_hover={{ bg: "#F54756" }}
-											bg={"#F57977"}
+											_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 											color={"white"}
 											type="submit"
 											isDisabled={isError}
@@ -173,8 +171,7 @@ function AddTipoAtend() {
 										<Spacer />
 										<Button
 											mt={4}
-											_hover={{ bg: "#F54756" }}
-											bg={"#F57977"}
+											_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 											color={"white"}
 											onClick={onClose}
 										>

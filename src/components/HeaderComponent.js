@@ -11,18 +11,20 @@ import {
   Box,
   Flex,
   Spacer,
+  Image,
   Button,
+  Link,
   HStack,
   Text,
 } from "@chakra-ui/react";
 
 import MainMenu from "./MenuComponent";
 import AddPaciente from "./AddPaciente";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Navigates } from "react-router-dom";
 
 function Header(props) {
   return (
-    <Box p="4" bg="#F57977" w={"100%"}>
+    <Box p="4" bg="#e6e4dc" w={"100%"} align='center' justify='center'>
       <Flex>
         <Box>
           <MainMenu />
@@ -32,16 +34,15 @@ function Header(props) {
           {props.title}
         </Box>
         <Spacer />
-        <Box>
-          <Menu>
+        <Image src='http://127.0.0.1:8082/LogoFarmaciaEscrita.png' alt='Logo da Farmácia Integrado' w={'15%'}/>
+          {/* <Menu>
             <MenuButton as={Button} bg="#F54756" color={"white"}>
               Conta
             </MenuButton>
             <MenuList>
-              <MenuItem>Sair</MenuItem>
+              <MenuItem href='/' as={Link}>Sair</MenuItem>
             </MenuList>
-          </Menu>
-        </Box>
+          </Menu> */}
       </Flex>
     </Box>
   );

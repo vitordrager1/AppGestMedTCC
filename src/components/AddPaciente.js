@@ -150,7 +150,7 @@ function AddPaciente() {
 									Cadastro realizado com sucesso !
 								</Center>
 							</ModalHeader>
-							<ModalCloseButton color={"#F54756"} />
+							<ModalCloseButton color={"#30302f"} />
 							<ModalBody>
 								<Center as={"b"}>
 									Realizar novo cadastro ?
@@ -160,8 +160,7 @@ function AddPaciente() {
 							<ModalFooter>
 								<Button
 									mt={4}
-									_hover={{ bg: "#F54756" }}
-									bg={"#F57977"}
+									_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 									color={"white"}
 									type="submit"
 									onClick={clear}
@@ -171,8 +170,7 @@ function AddPaciente() {
 								<Spacer />
 								<Button
 									mt={4}
-									_hover={{ bg: "#F54756" }}
-									bg={"#F57977"}
+									_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 									color={"white"}
 									onClick={onClose}
 								>
@@ -194,7 +192,7 @@ function AddPaciente() {
 									<ModalHeader>
 										<Center>Cadastro de Paciente</Center>
 									</ModalHeader>
-									<ModalCloseButton color={"#F54756"} />
+									<ModalCloseButton color={"#30302f"} />
 									<FormControl>
 										<FormLabel>Nome</FormLabel>
 										<Input
@@ -282,8 +280,7 @@ function AddPaciente() {
 									<ModalFooter>
 										<Button
 											mt={4}
-											_hover={{ bg: "#F54756" }}
-											bg={"#F57977"}
+											_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 											color={"white"}
 											type="submit"
 											isDisabled={isError}
@@ -293,8 +290,7 @@ function AddPaciente() {
 										<Spacer />
 										<Button
 											mt={4}
-											_hover={{ bg: "#F54756" }}
-											bg={"#F57977"}
+											_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 											color={"white"}
 											onClick={onClose}
 										>

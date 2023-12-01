@@ -78,7 +78,7 @@ export default class ListAgendamento extends Component {
 		const { agendamentos } = this.state;
 		return (
 			<Box>
-				<Header title="Agendamentos" />
+				<Header />
 				<Box minH={"100vh"} mt={10}>
 					<Grid
 						width={"80%"}
@@ -92,45 +92,39 @@ export default class ListAgendamento extends Component {
 								//const tipoAtendimento = await this.retListTipoAtend(agendamento.cd_tipoAtend)
 								return (
 									<Box
-										bg={"#F57977"}
+										bg={"#02D09D"}
 										key={agendamento.nr_agendamento}
 										boxShadow="md"
 										borderRadius="md"
 										margin={2}
 									>
-										<Card bg="tomato">
-											<CardHeader
-												bg={"#F54756"}
-												color={"white"}
-											>
-												<HStack
-													justify={"space-between"}
-												>
+										<Card>
+											<CardHeader bg={"#02D09D"} color={"#30302f"}>
+												<Flex justify={"flex-start"} flex-direction='row'>	
 													<Heading size="md">
-														Paciente:{" "}
+														{
+															agendamento.nr_agendamento
+														}		
+														{" - "}
 														{
 															agendamento.paciente
 																.pessoa.nome
 														}
+														<Flex flex-direction='column' gap='3' justify='flex-start' mt='4'>
+															<AddAtendimento  idPessoa={agendamento.IdPessoa} cdTipoAtend={agendamento.cd_tipoAtend} nrAgendamento={agendamento.nr_agendamento}/>
+															<EditAgendamento id={agendamento.nr_agendamento}/>
+														</Flex>
 													</Heading>
-													<Box>
-														<AddAtendimento idPessoa={agendamento.IdPessoa} cdTipoAtend={agendamento.cd_tipoAtend} nrAgendamento={agendamento.nr_agendamento}/>
-														<EditAgendamento
-															id={
-																agendamento.nr_agendamento
-															}
-														/>
-													</Box>
-												</HStack>
+												</Flex>
 											</CardHeader>
 
 											<CardBody
-												bg={"#F57977"}
-												color={"white"}
-												fontFamily={"Arial"}
+												bg={"#93D6C6"}
+												color={"#30302f"}
+												// fontFamily={"Arial"}
 											>
 												<HStack spacing="4">
-													<Box>
+													<Box fontWeight='semibold'>
 														<Text>
 															Tipo de Atendimento:{" "}
 															{agendamento.tipoAtendimento

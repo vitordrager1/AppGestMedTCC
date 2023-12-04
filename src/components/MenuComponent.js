@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import AddPaciente from "./AddPaciente";
 import AddAgendamento from "./AddAgendamento";
 import AddTipoAtend from "./AddTipoAtendimento";
@@ -29,12 +29,14 @@ import {
   Link,
   Center,
 } from "@chakra-ui/react";
+import { AuthContext } from "../context/auth";
 
 import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 function MainNavbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [placement, setPlacement] = React.useState("left");
+	const { singOut } = useContext(AuthContext);
 
   return (
     <>
@@ -77,7 +79,7 @@ function MainNavbar() {
                     textDecoration={"none"}
                     _hover={[{ textDecoration: "none" }, { color: "white" }]}
                     as={Link}
-                    href="painel"
+                    href="/painel"
                     display="flex" // Tornar o conteúdo flexível
                     justifyContent={"center"}
                     fontWeight='semibold'
@@ -134,11 +136,10 @@ function MainNavbar() {
                     bg={"#02E09D"}
                     textDecoration={"none"}
                     _hover={[{ textDecoration: "none" }, { color: "white" }]}
-                    as={Link}
-                    href="/"
                     display="flex" // Tornar o conteúdo flexível
                     justifyContent={"center"}
                     fontWeight='semibold'
+                    onClick={singOut}
                   >
                     Sair
                   </MenuItem>

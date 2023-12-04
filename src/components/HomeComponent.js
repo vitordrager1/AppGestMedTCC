@@ -1,9 +1,10 @@
-import { Box, Spacer, Flex } from "@chakra-ui/react";
+import { Box,Flex,  Text, Card ,CardBody, Heading } from "@chakra-ui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
 import Calendar from "./CalenderComponent";
-import ListAgendamentoDate from "./ListAgendamentoDate";
+import AddAtendimento from "./AddAtendimento"
+import EditAgendamento from "./EditAgendamento";
 
 import agendamentoService from "../services/agendamento.service";
 import { format } from "date-fns-tz";
@@ -17,7 +18,6 @@ function Home() {
 		}
 		var dataClicada = new Date(date);
 		var dataClicadaFormat = format(dataClicada, "yyyy-MM-dd");
-		console.log(dataClicadaFormat);
 		agendamentoService
 			.getAllDate(dataClicadaFormat)
 			.then((response) => {
@@ -29,27 +29,85 @@ function Home() {
 			});
 	});
 
+	const AgendamentoInfo = ({label, value}) => (
+		<Flex direction="row" gap={1}>
+			<Text fontWeight="bold" textTransform={"capitalize"}>{label}:</Text>
+			<Text>{value}</Text>
+		</Flex>
+	)
+
+	const AgendamentoList = ({agendamento}) => {
+		return(
+			<>
+				<Card mb='2'>
+					<CardBody>
+						<Heading size='md'  textTransform={"capitalize"} mb='2vh' bg='#f7f6f0'>{agendamento.nr_agendamento} - {(agendamento.paciente.pessoa.nome).toLowerCase()}</Heading>
+						<Flex flexDirection={'column'}>
+							<AgendamentoInfo value={String(agendamento.dt_horaInicio).slice(0, 5) + ' - ' + String(agendamento.dt_horaFim).slice(0, 5) } label={'Horário Agendado'}/>
+						</Flex>
+						<Flex flexDirection={'row'} gap='1'>
+							<AddAtendimento  idPessoa={agendamento.IdPessoa} cdTipoAtend={agendamento.cd_tipoAtend} nrAgendamento={agendamento.nr_agendamento}/>
+							<EditAgendamento id={agendamento.nr_agendamento}/>
+						</Flex>
+					</CardBody>
+				</Card>
+			</>
+		)
+	}
+
 	useEffect(() => {
 		retrieveAgendamento();
 	}, [dataAgendamento]);
 	return (
 		<Box>
 			<Header />
-			{/* <Box > h={"100vh"} mt={10} */}
-			<Box>
-				<Flex m="10">
-					<Spacer />
-					<Box boxShadow={5} borderRadius={5} p={2} bg={"#02E09D"}>
-						<Calendar onDateChange={retrieveAgendamento} />
+			<Flex flexDirection={'row'} gap='5' justifyContent={'center'} alignContent={'center'} m='4vh'>
+					<Box boxShadow={5} borderRadius={5} p={5} bg={"#02E09D"} w='50vh'>
+						<Calendar onDateChange={retrieveAgendamento} />	
 					</Box>
-					<Spacer></Spacer>
-					<ListAgendamentoDate
-						dados={agendamentos}
-						itemsPerPage={5}
-					/>
-					<Spacer />
-				</Flex>
-			</Box>
+					<Flex
+						bg='#02E09D'
+						flexDirection='column'
+						position="sticky"
+						top="0"
+						bgColor="primary.100"
+						zIndex="sticky"
+						height="50vh"
+						width="50%"
+						alignItems="center"
+						flexWrap="nowrap"
+						overflowX="auto"
+						css={{
+							WebkitOverflowScrolling: "touch",
+							msOverflowStyle: "-ms-autohiding-scrollbar",
+						}}
+						borderRadius={5}
+						sx={{
+							'&::-webkit-scrollbar': {
+							  width: '16px',
+							  borderRadius: '8px',
+							  backgroundColor: `rgba(0, 0, 0, 0.05)`,
+							},
+							'&::-webkit-scrollbar-thumb': {
+							  borderRadius: '8px',
+							  backgroundColor: `rgba(0, 0, 0, 0.2)`,
+							},
+						}}	
+					>
+						<Box w='90%'>
+							<Text textAlign={'center'} fontWeight={'semibold'} boxShadow={5} borderRadius={5} p={2} bg={"#f7f6f0"} mb='2vh' mt='2vh'>
+								Agendamentos Programados
+							</Text>
+							{
+								agendamentos.map(agendamento =>  {
+									return (
+										<AgendamentoList agendamento={agendamento}/>
+									)
+								})
+							}
+						</Box>
+					</Flex>
+			</Flex>
 			<Footer />
 		</Box>
 	);

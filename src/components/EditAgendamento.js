@@ -63,7 +63,7 @@ function EditAgendamento(id) {
 			.get(id.id)
 			.then((response) => {
 				var data = new Date(response.data.dt_atendimento);
-				const dataFormatada = format(data, "yyyy-MM-dd");
+				var dataFormatada = format(data, "yyyy-MM-dd");
 				setCdAtend(response.data.cd_tipoAtend);
 				setHoraInicio(response.data.dt_horaInicio);
 				setHoraFim(response.data.dt_horaFim);
@@ -79,13 +79,19 @@ function EditAgendamento(id) {
 	}
 
 	function handleUpdateAgendamento(event) {
+		var data = new Date(dataAgendamento);
+		data = data.setDate(data.getDate()+1)
+		var dataFormatada = format(data, "yyyy-MM-dd");
+		dataFormatada = `${dataFormatada},00:00:00`
+		console.log(dataFormatada)
+		console.log(data)
 		var data = {
 			nr_agendamento: id.id,
 			cd_tipoAtend: cdAtend,
 			dt_horaInicio: horaInicio,
 			dt_horaFim: horaFim,
 			ds_observacao: observacoes,
-			dt_atendimento: dataAgendamento,
+			dt_atendimento: dataFormatada,
 			in_cancelado: inCancelado,
 		};
 		agendamentoService

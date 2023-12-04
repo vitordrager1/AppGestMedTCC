@@ -1,48 +1,56 @@
-import React, {Component} from 'react'
-import './App.css';
-import { Routes, Route, Link } from "react-router-dom";
+// import React, { Component } from "react";
+// import "./App.css";
+// import { Routes, Route, Link } from "react-router-dom";
 
+// import { ChakraProvider } from "@chakra-ui/react";
+// import Home from "./components/HomeComponent";
+// import ListPaciente from "./components/ListPaciente";
+// import ListAgendamento from "./components/ListAgendamento";
+// import ListAtendimento from "./components/ListAtendimento";
+// import AboutUs from "./components/AboutUs";
+// import PainelAdministrador from "./components/PainelAdministrador";
+// import Login from "./components/Login";
+// import { AuthProvider } from "./context/auth";
+// const App = () => {
+// 	return (
+// 		<ChakraProvider>
+// 			<div>
+// 				<AuthProvider>
+// 					<Routes>
+// 						<Route path="/" element={<Login />} />
+// 						<Route path="/home" element={<Home />} />
+// 						<Route path="/pessoas" element={<ListPaciente />} />
+// 						<Route
+// 							path="/agendamentos"
+// 							element={<ListAgendamento />}
+// 						/>
+// 						<Route
+// 							path="/atendimento"
+// 							element={<ListAtendimento />}
+// 						/>
+// 						<Route path="/sobre" element={<AboutUs />} />
+// 						<Route
+// 							path="/painel"
+// 							element={<PainelAdministrador />}
+// 						/>
+// 					</Routes>
+// 				</AuthProvider>
+// 			</div>
+// 		</ChakraProvider>
+// 	);
+// };
 
-import Home from "./components/HomeComponent"
-import Header from "./components/HeaderComponent"
-import Navbar from "./components/MenuComponent"
-import { ChakraProvider } from '@chakra-ui/react';
-import ListPaciente from './components/ListPaciente';
-import ListAgendamento from './components/ListAgendamento'
-import ListAtendimento from './components/ListAtendimento';
-import AboutUs from './components/AboutUs'
-import PainelAdministrador from './components/PainelAdministrador';
-import Login from './components/Login'
+// export default App;
+import { AppRouter } from "./routes";
+import { AuthProvider } from "./context/auth";
+import { ChakraProvider } from "@chakra-ui/react";
 
-const App = () => {
-
-  return(
-
-      <ChakraProvider>
-        
-
-        <div>
-          <Routes>
-            <Route path='/' element={<Login/>} />
-            <Route path='/home' element={<Home/>} />
-            <Route path='/pessoas' element={<ListPaciente/>} />
-            <Route path='/agendamentos' element={<ListAgendamento/>} />
-            <Route path='/atendimento' element={<ListAtendimento/>} />
-            <Route path='/sobre' element={<AboutUs/>} />
-            <Route path='/painel' element={<PainelAdministrador/>} />
-            {/* <Route path='/tutorials' element={<TutorialsList/>} />
-            <Route path='/add' element={<AddTutorial/>} />
-            <Route path='/tutorials/:id' element={<Tutorial/>} /> */}
-          </Routes>
-        </div>
-
-        
-    </ChakraProvider>
-  )
-  
-
-
-}
-
-
-export default App;
+export const App = () => {
+	return (
+		<ChakraProvider>
+			<AuthProvider>
+				<AppRouter />
+			</AuthProvider>
+		</ChakraProvider>
+	);
+};

@@ -91,7 +91,6 @@ function AddAtendimento({ idPessoa, cdTipoAtend, nrAgendamento }) {
 			id_pessoa: idPessoa,
 			cd_tipoAtend: cdTipoAtend,
 		};
-		console.log(cdTipoInterv);
 		atendimentoService
 			.create(data)
 			.then((response) => {
@@ -154,6 +153,11 @@ function AddAtendimento({ idPessoa, cdTipoAtend, nrAgendamento }) {
 		clear();
 	}
 
+	function onCloseReload() {
+		onClose();
+		window.location.reload();
+	}
+
 	function handleUpdateAgendamento(nrAgendamento){
 		var data = {
 			is_atendido: true
@@ -202,7 +206,7 @@ function AddAtendimento({ idPessoa, cdTipoAtend, nrAgendamento }) {
 									_hover={{ bg: "#0CA3F5" }} bg={"#0C59F5"}
 									color={"white"}
 									type="submit"
-									onClick={onClose}
+									onClick={onCloseReload}
 								>
 									Ok
 								</Button>
